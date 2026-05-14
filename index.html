@@ -3,10 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Furlenco Fieldproxy Docs</title>
+    <title>Furlenco × Fieldproxy — Documentation</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f8fafc; color: #1e293b; }
+        header { background: linear-gradient(135deg, #1e3a5f 0%, #0f6b3c 100%); color: white; padding: 48px 24px; text-align: center; }
+        header h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 8px; }
+        header p { font-size: 1.1rem; opacity: 0.85; }
+        nav { background: white; border-bottom: 1px solid #e2e8f0; padding: 12px 24px; display: flex; gap: 24px; flex-wrap: wrap; }
+        nav a { color: #0f6b3c; text-decoration: none; font-weight: 500; font-size: 0.95rem; padding: 6px 0; border-bottom: 2px solid transparent; }
+        nav a:hover { border-bottom-color: #0f6b3c; }
+        main { max-width: 900px; margin: 40px auto; padding: 0 24px; }
+        section { background: white; border-radius: 12px; padding: 32px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
+        h2 { font-size: 1.5rem; font-weight: 600; color: #1e293b; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0; }
+        h3 { font-size: 1.15rem; font-weight: 600; color: #334155; margin: 20px 0 10px; }
+        p { color: #475569; line-height: 1.7; margin-bottom: 12px; }
+        ul { color: #475569; padding-left: 20px; line-height: 1.8; margin-bottom: 12px; }
+        .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .badge-green { background: #dcfce7; color: #166534; }
+        .badge-blue { background: #dbeafe; color: #1e40af; }
+        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-top: 16px; }
+        .card { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; }
+        .card h4 { font-size: 1rem; font-weight: 600; color: #1e293b; margin-bottom: 8px; }
+        .card p { font-size: 0.9rem; margin: 0; }
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; }
+        th { background: #f1f5f9; padding: 10px 14px; text-align: left; font-size: 0.85rem; font-weight: 600; color: #475569; border-bottom: 1px solid #e2e8f0; }
+        td { padding: 10px 14px; border-bottom: 1px solid #f1f5f9; font-size: 0.9rem; color: #475569; }
+        tr:hover td { background: #fafafa; }
+        footer { text-align: center; padding: 32px; color: #94a3b8; font-size: 0.9rem; }
+        .tag { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 6px; padding: 2px 8px; font-size: 0.8rem; color: #64748b; margin: 2px; display: inline-block; }
+    </style>
 </head>
 <body>
-    <h1>Furlenco Fieldproxy Documentation</h1>
-    <p>Documentation placeholder - file will be replaced with actual content.</p>
+    <header>
+        <h1>Furlenco × Fieldproxy</h1>
+        <p>Field Operations Documentation &amp; Integration Guide</p>
+    </header>
+    <nav>
+        <a href="#overview">Overview</a>
+        <a href="#modules">Modules</a>
+        <a href="#workflows">Workflows</a>
+        <a href="#reports">Reports</a>
+        <a href="#faq">FAQ</a>
+    </nav>
+    <main>
+        <section id="overview">
+            <h2>Project Overview</h2>
+            <p>This documentation covers the Fieldproxy integration for Furlenco's field operations team. Fieldproxy streamlines technician dispatch, job tracking, and customer communication for furniture delivery, installation, and servicing operations.</p>
+            <div class="card-grid">
+                <div class="card">
+                    <h4>🚚 Deliveries</h4>
+                    <p>Track and manage furniture delivery assignments from warehouse to customer door.</p>
+                </div>
+                <div class="card">
+                    <h4>🔧 Installation</h4>
+                    <p>Coordinate assembly and installation jobs with certified technicians.</p>
+                </div>
+                <div class="card">
+                    <h4>🛠 Service Requests</h4>
+                    <p>Handle post-delivery service tickets and repair assignments efficiently.</p>
+                </div>
+                <div class="card">
+                    <h4>📊 Analytics</h4>
+                    <p>Real-time dashboards for operations managers and team leads.</p>
+                </div>
+            </div>
+        </section>
+        <section id="modules">
+            <h2>Fieldproxy Modules</h2>
+            <h3>Job Management</h3>
+            <ul>
+                <li>Create, assign, and track field jobs end-to-end</li>
+                <li>Automated job scheduling based on technician availability</li>
+                <li>Customer appointment confirmation via SMS/WhatsApp</li>
+                <li>Real-time job status updates and ETA sharing</li>
+            </ul>
+            <h3>Technician App</h3>
+            <ul>
+                <li>Mobile app for Android and iOS</li>
+                <li>Offline-capable job sheets and checklists</li>
+                <li>Photo capture for job completion evidence</li>
+                <li>Digital signature collection from customers</li>
+            </ul>
+            <h3>Dispatch Console</h3>
+            <ul>
+                <li>Live map view of all active technicians</li>
+                <li>Drag-and-drop job reassignment</li>
+                <li>Cluster view for high-density areas (Mumbai, Bangalore, Delhi)</li>
+            </ul>
+        </section>
+        <section id="workflows">
+            <h2>Standard Workflows</h2>
+            <table>
+                <thead>
+                    <tr><th>Workflow</th><th>Trigger</th><th>SLA</th><th>Status</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>New Delivery</td><td>Order confirmed in OMS</td><td>48 hrs</td><td><span class="badge badge-green">Active</span></td></tr>
+                    <tr><td>Installation</td><td>Delivery completed</td><td>24 hrs</td><td><span class="badge badge-green">Active</span></td></tr>
+                    <tr><td>Service Request</td><td>Customer raises ticket</td><td>72 hrs</td><td><span class="badge badge-green">Active</span></td></tr>
+                    <tr><td>Recall / Pickup</td><td>Subscription ended</td><td>5 days</td><td><span class="badge badge-blue">In Review</span></td></tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="reports">
+            <h2>Reports &amp; KPIs</h2>
+            <p>The following reports are available in the Fieldproxy dashboard for Furlenco operations managers:</p>
+            <ul>
+                <li><strong>Daily Completion Rate</strong> — Jobs completed vs. scheduled per city</li>
+                <li><strong>First-Time Fix Rate</strong> — Service issues resolved on first visit</li>
+                <li><strong>Technician Utilization</strong> — Active hours vs. idle time</li>
+                <li><strong>Customer Satisfaction Score</strong> — Post-job NPS survey aggregates</li>
+                <li><strong>SLA Breach Report</strong> — Jobs exceeding committed turnaround time</li>
+            </ul>
+        </section>
+        <section id="faq">
+            <h2>FAQ</h2>
+            <h3>How do I reassign a job to a different technician?</h3>
+            <p>Open the Dispatch Console, locate the job on the map or job list, click the job card, and select "Reassign" from the action menu. Choose the new technician and confirm.</p>
+            <h3>Can technicians work without internet connectivity?</h3>
+            <p>Yes. The Fieldproxy mobile app supports offline mode. Jobs synced before going offline remain accessible. Completed job data syncs automatically when connectivity is restored.</p>
+            <h3>How are customers notified about their appointment?</h3>
+            <p>Customers receive automated WhatsApp and SMS notifications at job creation, 24 hours before the appointment, 1 hour before, and upon technician arrival.</p>
+            <h3>Who do I contact for technical support?</h3>
+            <p>Reach Fieldproxy support at <strong>support@fieldproxy.in</strong> or your dedicated Furlenco Customer Success Manager.</p>
+        </section>
+    </main>
+    <footer>
+        <p>Furlenco × Fieldproxy Integration — Internal Documentation — 2026</p>
+        <p style="margin-top:8px"><span class="tag">v1.0</span> <span class="tag">Field Ops</span> <span class="tag">Confidential</span></p>
+    </footer>
 </body>
 </html>
