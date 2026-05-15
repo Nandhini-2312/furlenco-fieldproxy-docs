@@ -9,343 +9,379 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --furlenco-teal:        #2BBFBC;
-  --furlenco-teal-dark:   #1A9D9A;
-  --furlenco-teal-soft:   #7FD7D4;
-  --furlenco-teal-bg:     #E8F7F6;
-  --bg:        #ffffff;
-  --bg-soft:   #F5FAFA;
-  --bg-card:   #ffffff;
-  --border:    #E2E8EC;
-  --border-soft: #EEF2F4;
-  --text:      #0F1B2A;
-  --text-2:    #334155;
-  --muted:     #64748B;
-  --accent:    var(--furlenco-teal);
-  --accent-dark: var(--furlenco-teal-dark);
-  --warn:      #E0A458;
-  --danger:    #D9596B;
-  --ok:        #4FB07A;
-  --code-bg:   #0F1B2A;
-  --code-text: #D8E4F0;
-}
-* { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
-font: 14px/1.6 "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
--webkit-font-smoothing: antialiased; }
-a { color: var(--accent-dark); text-decoration: none; font-weight: 500; }
-a:hover { color: var(--accent); text-decoration: underline; }
-code, pre { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
-code { background: var(--furlenco-teal-bg); color: var(--accent-dark);
-padding: 1px 6px; border-radius: 4px; font-size: 12px; font-weight: 500; }
-pre { background: var(--code-bg); color: var(--code-text);
-border-radius: 10px; padding: 16px 18px; overflow-x: auto;
-font-size: 12.5px; line-height: 1.6; }
-pre code { background: transparent; color: inherit; padding: 0; font-weight: 400; }
-hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
-.shell { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
-aside {
-background: var(--bg); border-right: 1px solid var(--border);
-padding: 28px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto;
-}
-.brand-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
-.brand-mark {
-width: 28px; height: 28px; border-radius: 7px;
-background: var(--furlenco-teal); display: grid; place-items: center;
-color: #fff; font-weight: 800; font-size: 14px; letter-spacing: -.5px;
-}
-aside h1 { font-size: 15.5px; margin: 0; letter-spacing: -.2px; color: var(--text); }
-aside .sub { font-size: 11.5px; color: var(--muted); margin: 4px 0 24px; }
-aside nav a {
-display: block; padding: 6px 12px; border-radius: 7px;
-color: var(--text-2); font-size: 13px; margin: 1px 0; font-weight: 500;
-}
-aside nav a:hover { background: var(--furlenco-teal-bg); color: var(--accent-dark);
-text-decoration: none; }
-aside nav .grp { color: var(--muted); font-size: 10.5px; text-transform: uppercase;
-letter-spacing: 1px; padding: 18px 12px 6px; font-weight: 600; }
-main { padding: 44px 60px 100px; max-width: 1120px; }
-header.hero {
-background: linear-gradient(135deg, var(--furlenco-teal) 0%, var(--furlenco-teal-dark) 100%);
-border-radius: 18px;
-padding: 44px 44px 40px; margin-bottom: 36px; color: #fff;
-box-shadow: 0 12px 40px -16px rgba(43, 191, 188, .35);
-}
-header.hero h1 { margin: 0 0 12px; font-size: 32px; font-weight: 700;
-letter-spacing: -.6px; line-height: 1.15; }
-header.hero p { margin: 0; color: rgba(255,255,255,.92); max-width: 760px;
-font-size: 15px; line-height: 1.65; }
-.badges { margin-top: 22px; display: flex; gap: 8px; flex-wrap: wrap; }
-.badge { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.28);
-padding: 5px 12px; border-radius: 999px; font-size: 12px; color: #fff; font-weight: 500;
-backdrop-filter: blur(8px); }
-.badge.accent { background: #fff; color: var(--accent-dark); border-color: transparent; }
-.badge.warn   { background: #FFF2DE; color: #8A5E1F; border-color: transparent; }
-.badge.ok     { background: #DCF4E6; color: #1E6B3E; border-color: transparent; }
-main > section .badge:not(.accent):not(.warn):not(.ok) {
-background: var(--furlenco-teal-bg); color: var(--accent-dark);
-border-color: transparent;
-}
-h2 { font-size: 22px; margin: 44px 0 14px; font-weight: 700;
-letter-spacing: -.4px; color: var(--text); }
-h3 { font-size: 16px; margin: 26px 0 10px; font-weight: 600;
-letter-spacing: -.2px; color: var(--text); }
-p { color: var(--text-2); }
-.grid { display: grid; gap: 16px; }
-.grid.cols-2 { grid-template-columns: 1fr 1fr; }
-.card {
-background: var(--bg-card);
-border: 1px solid var(--border);
-border-radius: 14px; padding: 24px 26px;
-margin: 16px 0;
-box-shadow: 0 1px 2px rgba(15, 27, 42, 0.03);
-}
-.card h3 { margin-top: 0; }
-.card h3 .badge { font-size: 11px; padding: 3px 10px; margin-left: 8px;
-vertical-align: middle; font-weight: 500; }
-table.cols {
-width: 100%; border-collapse: collapse; font-size: 12.5px;
-margin-top: 12px;
-}
-table.cols th, table.cols td {
-text-align: left; padding: 9px 12px;
-border-bottom: 1px solid var(--border-soft); vertical-align: top;
-}
-table.cols tr:last-child td { border-bottom: none; }
-table.cols th { color: var(--muted); font-weight: 600; font-size: 10.5px;
-text-transform: uppercase; letter-spacing: .8px;
-background: var(--bg-soft); border-bottom: 1px solid var(--border); }
-table.cols .col { font-family: "JetBrains Mono", monospace; color: var(--text);
-font-size: 12.5px; font-weight: 500; }
-table.cols .type { color: var(--accent-dark); font-family: "JetBrains Mono", monospace;
-font-size: 11.5px; }
-table.cols td:nth-child(3) { color: var(--text-2); }
-table.cols .flag {
-display: inline-block; background: var(--bg-soft); border-radius: 4px;
-padding: 1px 7px; font-size: 10px; color: var(--muted); margin-right: 4px;
-font-weight: 600; letter-spacing: .3px;
-}
-table.cols .flag.pk { background: #FCE7E5; color: #B23F35; }
-table.cols .flag.fk { background: var(--furlenco-teal-bg); color: var(--accent-dark); }
-table.cols .flag.uq { background: #FFF2DE; color: #8A5E1F; }
-.endpoint {
-background: var(--bg-card); border: 1px solid var(--border);
-border-radius: 12px; padding: 20px 24px; margin: 14px 0;
-box-shadow: 0 1px 2px rgba(15, 27, 42, 0.03);
-}
-.endpoint .row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
-.verb { font-family: "JetBrains Mono", monospace; font-size: 11px;
-padding: 4px 10px; border-radius: 5px; background: var(--furlenco-teal);
-color: #fff; font-weight: 600; letter-spacing: .5px; }
-.path { font-family: "JetBrains Mono", monospace; font-size: 13.5px;
-color: var(--text); font-weight: 500; }
-details { background: var(--bg-soft); border-radius: 8px; border: 1px solid var(--border);
-padding: 0; margin: 12px 0; }
-details summary { padding: 10px 14px; cursor: pointer; font-weight: 500;
-list-style: none; color: var(--text); font-size: 13px; }
-details summary::-webkit-details-marker { display: none; }
-details summary::before { content: "\25B8 "; color: var(--muted); }
-details[open] summary::before { content: "\25BE "; }
-details > div, details > pre { padding: 0 14px 14px; }
-details > pre { margin: 0 14px 14px; }
-.note { border-left: 3px solid var(--accent); padding: 12px 16px;
-background: var(--furlenco-teal-bg); border-radius: 0 8px 8px 0;
-color: var(--accent-dark); font-size: 13px; margin: 14px 0; }
-.note strong { color: var(--text); }
-.note.warn   { border-color: var(--warn);   background: #FFF6E6; color: #8A5E1F; }
-.note.danger { border-color: var(--danger); background: #FCEBED; color: #8B2C39; }
-.note.ok     { border-color: var(--ok);     background: #E4F5EB; color: #1E6B3E; }
-.copy-btn { position: absolute; top: 10px; right: 10px;
-background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
-color: rgba(255,255,255,.7); border-radius: 6px;
-padding: 4px 12px; font-size: 11px; cursor: pointer;
-font-family: inherit; font-weight: 500;
-transition: all .15s ease;
-}
-.copy-btn:hover { color: #fff; background: rgba(255,255,255,.15); }
-.code-wrap { position: relative; }
-.locked-box {
-background: var(--bg-soft);
-border: 1px solid var(--border);
-border-radius: 12px;
-padding: 18px 20px;
-margin: 14px 0 22px;
-}
-.locked-header {
-display: flex; align-items: center; gap: 10px;
-font-weight: 600; color: var(--text); font-size: 14px;
-}
-.lock-icon { font-size: 16px; }
-.locked-header .badge { font-size: 10.5px; padding: 3px 10px; }
-.unlock-form {
-display: flex; gap: 8px; margin-top: 4px;
-}
-.unlock-form input[type="password"] {
-flex: 1; padding: 10px 14px;
-font: inherit; font-size: 13.5px;
-border: 1px solid var(--border); border-radius: 8px;
-background: #fff; color: var(--text);
-outline: none; transition: border-color .15s, box-shadow .15s;
-}
-.unlock-form input[type="password"]:focus {
-border-color: var(--accent);
-box-shadow: 0 0 0 3px rgba(43, 191, 188, .18);
-}
-.unlock-form button {
-padding: 10px 20px; font: inherit; font-size: 13.5px; font-weight: 600;
-background: var(--accent); color: #fff; border: none; border-radius: 8px;
-cursor: pointer; transition: background .15s;
-}
-.unlock-form button:hover { background: var(--accent-dark); }
-.unlock-form button:disabled { opacity: .6; cursor: wait; }
-.unlock-error {
-margin-top: 10px; color: var(--danger); font-size: 12.5px; font-weight: 500;
-}
-.locked-revealed pre {
-margin: 12px 0;
-padding: 14px 16px;
-font-size: 11.5px;
-word-break: break-all;
-white-space: pre-wrap;
-user-select: all;
-}
-.locked-actions { display: flex; gap: 8px; }
-.locked-actions button {
-padding: 8px 16px; font: inherit; font-size: 12.5px; font-weight: 500;
-background: #fff; color: var(--text-2);
-border: 1px solid var(--border); border-radius: 7px;
-cursor: pointer; transition: all .15s;
-}
-.locked-actions button:hover {
-border-color: var(--accent); color: var(--accent-dark);
-background: var(--furlenco-teal-bg);
-}
-footer { color: var(--muted); font-size: 12.5px; margin-top: 72px; padding-top: 24px;
-border-top: 1px solid var(--border); }
-footer code { font-size: 11.5px; }
-@media (max-width: 900px) {
-.shell { grid-template-columns: 1fr; }
-aside { position: static; height: auto; }
-main { padding: 28px; }
-.grid.cols-2 { grid-template-columns: 1fr; }
-header.hero { padding: 32px 28px; }
-header.hero h1 { font-size: 24px; }
-}
+  :root {
+    /* Furlenco brand */
+    --furlenco-teal:        #2BBFBC;
+    --furlenco-teal-dark:   #1A9D9A;
+    --furlenco-teal-soft:   #7FD7D4;
+    --furlenco-teal-bg:     #E8F7F6;
+
+    --bg:        #ffffff;
+    --bg-soft:   #F5FAFA;
+    --bg-card:   #ffffff;
+    --border:    #E2E8EC;
+    --border-soft: #EEF2F4;
+    --text:      #0F1B2A;
+    --text-2:    #334155;
+    --muted:     #64748B;
+    --accent:    var(--furlenco-teal);
+    --accent-dark: var(--furlenco-teal-dark);
+    --warn:      #E0A458;
+    --danger:    #D9596B;
+    --ok:        #4FB07A;
+    --code-bg:   #0F1B2A;
+    --code-text: #D8E4F0;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }                                   /* JS-free smooth scroll */
+  html, body { margin: 0; padding: 0; background: var(--bg); color: var(--text);
+    font: 14px/1.6 "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased; }
+  section, .card { scroll-margin-top: 20px; }                         /* avoid being clipped on jump */
+  a { color: var(--accent-dark); text-decoration: none; font-weight: 500; }
+  a:hover { color: var(--accent); text-decoration: underline; }
+  code, pre { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+  code { background: var(--furlenco-teal-bg); color: var(--accent-dark);
+    padding: 1px 6px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+  pre { background: var(--code-bg); color: var(--code-text);
+    border-radius: 10px; padding: 16px 18px; overflow-x: auto;
+    font-size: 12.5px; line-height: 1.6; }
+  pre code { background: transparent; color: inherit; padding: 0; font-weight: 400; }
+  hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+  /* Layout */
+  .shell { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+  aside {
+    background: var(--bg); border-right: 1px solid var(--border);
+    padding: 28px 20px; position: sticky; top: 0; height: 100vh; overflow-y: auto;
+  }
+  .brand-row { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .brand-mark {
+    width: 28px; height: 28px; border-radius: 7px;
+    background: var(--furlenco-teal); display: grid; place-items: center;
+    color: #fff; font-weight: 800; font-size: 14px; letter-spacing: -.5px;
+  }
+  aside h1 { font-size: 15.5px; margin: 0; letter-spacing: -.2px; color: var(--text); }
+  aside .sub { font-size: 11.5px; color: var(--muted); margin: 4px 0 24px; }
+  aside nav a {
+    display: block; padding: 6px 12px; border-radius: 7px;
+    color: var(--text-2); font-size: 13px; margin: 1px 0; font-weight: 500;
+  }
+  aside nav a:hover { background: var(--furlenco-teal-bg); color: var(--accent-dark);
+    text-decoration: none; }
+  aside nav .grp { color: var(--muted); font-size: 10.5px; text-transform: uppercase;
+    letter-spacing: 1px; padding: 18px 12px 6px; font-weight: 600; }
+
+  main { padding: 44px 60px 100px; max-width: 1120px; }
+
+  header.hero {
+    background: linear-gradient(135deg, var(--furlenco-teal) 0%, var(--furlenco-teal-dark) 100%);
+    border-radius: 18px;
+    padding: 44px 44px 40px; margin-bottom: 36px; color: #fff;
+    box-shadow: 0 12px 40px -16px rgba(43, 191, 188, .35);
+  }
+  header.hero h1 { margin: 0 0 12px; font-size: 32px; font-weight: 700;
+    letter-spacing: -.6px; line-height: 1.15; }
+  header.hero p { margin: 0; color: rgba(255,255,255,.92); max-width: 760px;
+    font-size: 15px; line-height: 1.65; }
+  .badges { margin-top: 22px; display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.28);
+    padding: 5px 12px; border-radius: 999px; font-size: 12px; color: #fff; font-weight: 500;
+    backdrop-filter: blur(8px); }
+  .badge.accent { background: #fff; color: var(--accent-dark); border-color: transparent; }
+  .badge.warn   { background: #FFF2DE; color: #8A5E1F; border-color: transparent; }
+  .badge.ok     { background: #DCF4E6; color: #1E6B3E; border-color: transparent; }
+
+  /* Badges OUTSIDE the hero (on lighter bg) */
+  main > section .badge:not(.accent):not(.warn):not(.ok) {
+    background: var(--furlenco-teal-bg); color: var(--accent-dark);
+    border-color: transparent;
+  }
+
+  h2 { font-size: 22px; margin: 44px 0 14px; font-weight: 700;
+    letter-spacing: -.4px; color: var(--text); }
+  h3 { font-size: 16px; margin: 26px 0 10px; font-weight: 600;
+    letter-spacing: -.2px; color: var(--text); }
+  p { color: var(--text-2); }
+
+  .grid { display: grid; gap: 16px; }
+  .grid.cols-2 { grid-template-columns: 1fr 1fr; }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 24px 26px;
+    margin: 16px 0;
+    box-shadow: 0 1px 2px rgba(15, 27, 42, 0.03);
+  }
+  .card h3 { margin-top: 0; }
+  .card h3 .badge { font-size: 11px; padding: 3px 10px; margin-left: 8px;
+    vertical-align: middle; font-weight: 500; }
+
+  table.cols {
+    width: 100%; border-collapse: collapse; font-size: 12.5px;
+    margin-top: 12px;
+  }
+  table.cols th, table.cols td {
+    text-align: left; padding: 9px 12px;
+    border-bottom: 1px solid var(--border-soft); vertical-align: top;
+  }
+  table.cols tr:last-child td { border-bottom: none; }
+  table.cols th { color: var(--muted); font-weight: 600; font-size: 10.5px;
+    text-transform: uppercase; letter-spacing: .8px;
+    background: var(--bg-soft); border-bottom: 1px solid var(--border); }
+  table.cols .col { font-family: "JetBrains Mono", monospace; color: var(--text);
+    font-size: 12.5px; font-weight: 500; }
+  table.cols .type { color: var(--accent-dark); font-family: "JetBrains Mono", monospace;
+    font-size: 11.5px; }
+  table.cols td:nth-child(3) { color: var(--text-2); }
+  table.cols .flag {
+    display: inline-block; background: var(--bg-soft); border-radius: 4px;
+    padding: 1px 7px; font-size: 10px; color: var(--muted); margin-right: 4px;
+    font-weight: 600; letter-spacing: .3px;
+  }
+  table.cols .flag.pk { background: #FCE7E5; color: #B23F35; }
+  table.cols .flag.fk { background: var(--furlenco-teal-bg); color: var(--accent-dark); }
+  table.cols .flag.uq { background: #FFF2DE; color: #8A5E1F; }
+
+  .endpoint {
+    background: var(--bg-card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px 24px; margin: 14px 0;
+    box-shadow: 0 1px 2px rgba(15, 27, 42, 0.03);
+  }
+  .endpoint .row { display: flex; align-items: center; gap: 12px; margin-bottom: 6px; }
+  .verb { font-family: "JetBrains Mono", monospace; font-size: 11px;
+    padding: 4px 10px; border-radius: 5px; background: var(--furlenco-teal);
+    color: #fff; font-weight: 600; letter-spacing: .5px; }
+  .path { font-family: "JetBrains Mono", monospace; font-size: 13.5px;
+    color: var(--text); font-weight: 500; }
+
+  details { background: var(--bg-soft); border-radius: 8px; border: 1px solid var(--border);
+    padding: 0; margin: 12px 0; }
+  details summary { padding: 10px 14px; cursor: pointer; font-weight: 500;
+    list-style: none; color: var(--text); font-size: 13px; }
+  details summary::-webkit-details-marker { display: none; }
+  details summary::before { content: "▸ "; color: var(--muted); }
+  details[open] summary::before { content: "▾ "; }
+  details > div, details > pre { padding: 0 14px 14px; }
+  details > pre { margin: 0 14px 14px; }
+
+  .note { border-left: 3px solid var(--accent); padding: 12px 16px;
+    background: var(--furlenco-teal-bg); border-radius: 0 8px 8px 0;
+    color: var(--accent-dark); font-size: 13px; margin: 14px 0; }
+  .note strong { color: var(--text); }
+  .note.warn   { border-color: var(--warn);   background: #FFF6E6; color: #8A5E1F; }
+  .note.danger { border-color: var(--danger); background: #FCEBED; color: #8B2C39; }
+  .note.ok     { border-color: var(--ok);     background: #E4F5EB; color: #1E6B3E; }
+
+  .copy-btn { position: absolute; top: 10px; right: 10px;
+    background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.7); border-radius: 6px;
+    padding: 4px 12px; font-size: 11px; cursor: pointer;
+    font-family: inherit; font-weight: 500;
+    transition: all .15s ease;
+  }
+  .copy-btn:hover { color: #fff; background: rgba(255,255,255,.15); }
+  .code-wrap { position: relative; }
+
+  /* Password-protected API key box */
+  .locked-box {
+    background: var(--bg-soft);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin: 14px 0 22px;
+  }
+  .locked-header {
+    display: flex; align-items: center; gap: 10px;
+    font-weight: 600; color: var(--text); font-size: 14px;
+  }
+  .lock-icon { font-size: 16px; }
+  .locked-header .badge { font-size: 10.5px; padding: 3px 10px; }
+  .unlock-form {
+    display: flex; gap: 8px; margin-top: 4px;
+  }
+  .unlock-form input[type="password"] {
+    flex: 1; padding: 10px 14px;
+    font: inherit; font-size: 13.5px;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: #fff; color: var(--text);
+    outline: none; transition: border-color .15s, box-shadow .15s;
+  }
+  .unlock-form input[type="password"]:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(43, 191, 188, .18);
+  }
+  .unlock-form button {
+    padding: 10px 20px; font: inherit; font-size: 13.5px; font-weight: 600;
+    background: var(--accent); color: #fff; border: none; border-radius: 8px;
+    cursor: pointer; transition: background .15s;
+  }
+  .unlock-form button:hover { background: var(--accent-dark); }
+  .unlock-form button:disabled { opacity: .6; cursor: wait; }
+  .unlock-error {
+    margin-top: 10px; color: var(--danger); font-size: 12.5px; font-weight: 500;
+  }
+  .locked-revealed pre {
+    margin: 12px 0;
+    padding: 14px 16px;
+    font-size: 11.5px;
+    word-break: break-all;
+    white-space: pre-wrap;
+    user-select: all;
+  }
+  .locked-actions { display: flex; gap: 8px; }
+  .locked-actions button {
+    padding: 8px 16px; font: inherit; font-size: 12.5px; font-weight: 500;
+    background: #fff; color: var(--text-2);
+    border: 1px solid var(--border); border-radius: 7px;
+    cursor: pointer; transition: all .15s;
+  }
+  .locked-actions button:hover {
+    border-color: var(--accent); color: var(--accent-dark);
+    background: var(--furlenco-teal-bg);
+  }
+
+  footer { color: var(--muted); font-size: 12.5px; margin-top: 72px; padding-top: 24px;
+    border-top: 1px solid var(--border); }
+  footer code { font-size: 11.5px; }
+
+  @media (max-width: 900px) {
+    .shell { grid-template-columns: 1fr; }
+    aside { position: static; height: auto; }
+    main { padding: 28px; }
+    .grid.cols-2 { grid-template-columns: 1fr; }
+    header.hero { padding: 32px 28px; }
+    header.hero h1 { font-size: 24px; }
+  }
 </style>
 </head>
 <body>
 <div class="shell">
+
 <aside>
-<div class="brand-row">
-<div class="brand-mark">F</div>
-<h1>Furlenco × FieldProxy</h1>
-</div>
-<div class="sub">Integration guide · v1.0</div>
-<nav>
-<div class="grp">Getting started</div>
-<a href="#overview">Overview</a>
-<a href="#auth">Authentication</a>
-<a href="#endpoints">REST endpoints</a>
-<div class="grp">Database</div>
-<a href="#schema-overview">Schema overview</a>
-<a href="#t-partners">furlenco_partners</a>
-<a href="#t-technicians">furlenco_technicians</a>
-<a href="#t-requests">furlenco_service_requests</a>
-<a href="#t-haier">service_request_haier</a>
-<a href="#t-updates">furlenco_service_updates</a>
-<a href="#t-images">furlenco_service_images</a>
-<a href="#t-ratings">furlenco_customer_ratings</a>
-<div class="grp">Samples</div>
-<a href="#sample-insert">Insert a work order</a>
-<a href="#sample-haier">Insert Haier payload</a>
-<a href="#sample-status">Push a status update</a>
-<a href="#sample-read">Read &amp; filter</a>
-<a href="#sample-update">Update a row</a>
-<a href="#sample-delete">Delete a row</a>
-<div class="grp">Reference</div>
-<a href="#errors">Common errors</a>
-<a href="#contract">Furlenco API contract</a>
-</nav>
+  <div class="brand-row">
+    <div class="brand-mark">F</div>
+    <h1>Furlenco × FieldProxy</h1>
+  </div>
+  <div class="sub">Integration guide · v1.0</div>
+  <nav>
+    <div class="grp">Getting started</div>
+    <a href="#overview">Overview</a>
+    <a href="#auth">Authentication</a>
+    <a href="#endpoints">REST endpoints</a>
+    <div class="grp">Database</div>
+    <a href="#schema-overview">Schema overview</a>
+    <a href="#t-partners">furlenco_partners</a>
+    <a href="#t-technicians">furlenco_technicians</a>
+    <a href="#t-requests">furlenco_service_requests</a>
+    <a href="#t-haier">service_request_haier</a>
+    <a href="#t-updates">furlenco_service_updates</a>
+    <a href="#t-images">furlenco_service_images</a>
+    <a href="#t-ratings">furlenco_customer_ratings</a>
+    <div class="grp">Samples</div>
+    <a href="#sample-insert">Insert a work order</a>
+    <a href="#sample-haier">Insert Haier payload</a>
+    <a href="#sample-status">Push a status update</a>
+    <a href="#sample-read">Read &amp; filter</a>
+    <a href="#sample-update">Update a row</a>
+    <a href="#sample-delete">Delete a row</a>
+    <div class="grp">Reference</div>
+    <a href="#errors">Common errors</a>
+    <a href="#contract">Furlenco API contract</a>
+  </nav>
 </aside>
+
 <main>
+
 <header class="hero">
-<h1>Furlenco × FieldProxy — Integration Guide</h1>
-<p>One place for the database schema, REST endpoints and ready-to-paste sample requests for the Furlenco work-order integration with FieldProxy. Built around the live Postgres tables (<code>furlenco_*</code>) and the Furlenco × FieldProxy API contract for partners such as <strong>HAIER</strong>.</p>
-<div class="badges">
-<span class="badge accent">v1.0 · 2026</span>
-<span class="badge">Base URL · <code>https://api-india-1.fieldproxy.ai</code></span>
-<span class="badge">Auth · <code>x-api-key</code> (JWT)</span>
-<span class="badge warn">Staging</span>
-</div>
+  <h1>Furlenco × FieldProxy — Integration Guide</h1>
+  <p>One place for the database schema, REST endpoints and ready-to-paste sample requests for the Furlenco work-order integration with FieldProxy. Built around the live Postgres tables (<code>furlenco_*</code>) and the Furlenco × FieldProxy API contract for partners such as <strong>HAIER</strong>.</p>
+  <div class="badges">
+    <span class="badge accent">v1.0 · 2026</span>
+    <span class="badge">Base URL · <code>https://api-india-1.fieldproxy.ai</code></span>
+    <span class="badge">Auth · <code>x-api-key</code> (JWT)</span>
+    <span class="badge warn">Staging</span>
+  </div>
 </header>
+
 <section id="overview">
-<h2>Overview</h2>
-<p>FieldProxy hosts the operational database for the Furlenco work-order flow. The integration covers three things:</p>
-<ol>
-<li><strong>Receive</strong> work-order creation payloads from Furlenco (which originate from partners like HAIER).</li>
-<li><strong>Run</strong> the field-service lifecycle: assign a technician, capture issue / fulfilment proof, update status.</li>
-<li><strong>Push</strong> status updates back to Furlenco via the service-activity webhook.</li>
-</ol>
-<p>All of that is backed by 6 Postgres tables and 4 FieldProxy REST endpoints. This document maps every contract field to a column, and gives a copy-paste curl for each operation.</p>
+  <h2>Overview</h2>
+  <p>FieldProxy hosts the operational database for the Furlenco work-order flow. The integration covers three things:</p>
+  <ol>
+    <li><strong>Receive</strong> work-order creation payloads from Furlenco (which originate from partners like HAIER).</li>
+    <li><strong>Run</strong> the field-service lifecycle: assign a technician, capture issue / fulfilment proof, update status.</li>
+    <li><strong>Push</strong> status updates back to Furlenco via the service-activity webhook.</li>
+  </ol>
+  <p>All of that is backed by 6 Postgres tables and 4 FieldProxy REST endpoints. This document maps every contract field to a column, and gives a copy-paste curl for each operation.</p>
 </section>
+
 <section id="auth">
-<h2>Authentication</h2>
-<p>There are two distinct things to know about — they are separate:</p>
-<ol style="color: var(--text-2);">
-<li><strong>FieldProxy app login</strong> — open <a href="https://app.fieldproxy.ai/login" target="_blank" rel="noopener">app.fieldproxy.ai/login</a> in the browser to use the platform UI, browse Sheets, and view your API tokens.</li>
-<li><strong>API token (<code>x-api-key</code>)</strong> — a JWT used as a header on every <code>/api/*</code> REST call. Generated and viewed inside the FieldProxy app.</li>
-</ol>
-<h3>1 · FieldProxy app login</h3>
-<table class="cols">
-<thead><tr><th>Field</th><th>Value</th></tr></thead>
-<tbody>
-<tr><td>Login URL</td><td><a href="https://app.fieldproxy.ai/login" target="_blank" rel="noopener">https://app.fieldproxy.ai/login</a></td></tr>
-<tr><td>Org ID</td><td><code>furlenco</code></td></tr>
-<tr><td>User ID</td><td><code>akil</code></td></tr>
-<tr><td>Password</td><td>shared with the team — request from the Furlenco × FieldProxy admin</td></tr>
-</tbody>
-</table>
-<p style="color: var(--text-2);">After logging in:</p>
-<ul style="color: var(--text-2);">
-<li><strong>Sheets</strong> — browse every database table (the <code>furlenco_*</code> tables documented below).</li>
-<li><strong>API tokens</strong> — separate screen where the <code>x-api-key</code> JWT lives. Copy it from there into your client / Postman / curl.</li>
-</ul>
-<h3>2 · API token (<code>x-api-key</code>)</h3>
-<p>The token is a JWT visible inside the FieldProxy app’s API-tokens screen. Pass it as the <code>x-api-key</code> header on every <code>/api/*</code> call. Treat it like a database password — never commit it to source control.</p>
-<div class="locked-box">
-<div class="locked-header">
-<span class="lock-icon" id="lock-icon">🔒</span>
-<span>Quick reveal</span>
-<span class="badge warn" style="margin-left:auto">password required</span>
-</div>
-<div class="locked-body" id="apikey-body">
-<p style="margin: 6px 0 12px; color: var(--text-2);">Enter the team password (same as the FieldProxy app login) to reveal and copy the current live token here, without opening the app.</p>
-<form id="apikey-unlock" class="unlock-form" autocomplete="off">
-<input type="password" id="apikey-pwd" placeholder="Password" autocomplete="new-password" spellcheck="false" />
-<button type="submit">Unlock</button>
-</form>
-<div id="apikey-error" class="unlock-error" hidden></div>
-</div>
-<div class="locked-revealed" id="apikey-revealed" hidden>
-<pre id="apikey-value"><code></code></pre>
-<div class="locked-actions">
-<button id="apikey-copy" type="button">Copy</button>
-<button id="apikey-hide" type="button">Hide again</button>
-</div>
-</div>
-</div>
-<div class="note">
-Prefer the FieldProxy app whenever possible — the token shown above is a convenience snapshot. The source of truth is the API-tokens screen inside <a href="https://app.fieldproxy.ai/login" target="_blank" rel="noopener">app.fieldproxy.ai</a>.
-</div>
+  <h2>Authentication</h2>
+  <p>There are two distinct things to know about — they are separate:</p>
+  <ol style="color: var(--text-2);">
+    <li><strong>FieldProxy app login</strong> — open <a href="https://app.fieldproxy.ai/login" target="_blank" rel="noopener">app.fieldproxy.ai/login</a> in the browser to use the platform UI, browse Sheets, and view your API tokens.</li>
+    <li><strong>API token (<code>x-api-key</code>)</strong> — a JWT used as a header on every <code>/api/*</code> REST call. Generated and viewed inside the FieldProxy app.</li>
+  </ol>
+
+  <h3>1 · FieldProxy app login</h3>
+  <table class="cols">
+    <thead><tr><th>Field</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Login URL</td><td><a href="https://app.fieldproxy.ai/login" target="_blank" rel="noopener">https://app.fieldproxy.ai/login</a></td></tr>
+      <tr><td>Org ID</td><td><code>furlenco</code></td></tr>
+      <tr><td>User ID</td><td><code>akil</code></td></tr>
+      <tr><td>Password</td><td>shared with the team — request from the Furlenco × FieldProxy admin</td></tr>
+    </tbody>
+  </table>
+  <p style="color: var(--text-2);">After logging in:</p>
+  <ul style="color: var(--text-2);">
+    <li><strong>Sheets</strong> — browse every database table (the <code>furlenco_*</code> tables documented below).</li>
+    <li><strong>API tokens</strong> — separate screen where the <code>x-api-key</code> JWT lives. Copy it from there into your client / Postman / curl.</li>
+  </ul>
+
+  <h3>2 · API token (<code>x-api-key</code>)</h3>
+  <p>The token is a JWT visible inside the FieldProxy app's API-tokens screen. Pass it as the <code>x-api-key</code> header on every <code>/api/*</code> call. Treat it like a database password — never commit it to source control.</p>
+
+  <div class="locked-box">
+    <div class="locked-header">
+      <span class="lock-icon" id="lock-icon">🔒</span>
+      <span>Quick reveal</span>
+      <span class="badge warn" style="margin-left:auto">password required</span>
+    </div>
+
+    <div class="locked-body" id="apikey-body">
+      <p style="margin: 6px 0 12px; color: var(--text-2);">Enter the team password (same as the FieldProxy app login) to reveal and copy the current live token here, without opening the app.</p>
+      <form id="apikey-unlock" class="unlock-form" autocomplete="off">
+        <input type="password" id="apikey-pwd" placeholder="Password"
+               autocomplete="new-password" spellcheck="false" />
+        <button type="submit">Unlock</button>
+      </form>
+      <div id="apikey-error" class="unlock-error" hidden></div>
+    </div>
+
+    <div class="locked-revealed" id="apikey-revealed" hidden>
+      <pre id="apikey-value"><code></code></pre>
+      <div class="locked-actions">
+        <button id="apikey-copy" type="button">Copy</button>
+        <button id="apikey-hide" type="button">Hide again</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    Prefer the FieldProxy app whenever possible — the token shown above is a convenience snapshot. The source of truth is the API-tokens screen inside <a href="https://app.fieldproxy.ai/login" target="_blank" rel="noopener">app.fieldproxy.ai</a>.
+  </div>
 </section>
+
 <section id="endpoints">
-<h2>REST endpoints</h2>
-<p>The FieldProxy v4 Backend API exposes four database operations. All are <code>POST</code>, all require <code>x-api-key</code>, all return JSON.</p>
-<div class="endpoint">
-<div class="row"><span class="verb">POST</span><span class="path">/api/insert</span></div>
-<p>Bulk-insert one or many rows into a table.</p>
-<details><summary>Request body</summary>
+  <h2>REST endpoints</h2>
+  <p>The FieldProxy v4 Backend API exposes four database operations. All are <code>POST</code>, all require <code>x-api-key</code>, all return JSON.</p>
+
+  <div class="endpoint">
+    <div class="row"><span class="verb">POST</span><span class="path">/api/insert</span></div>
+    <p>Bulk-insert one or many rows into a table.</p>
+    <details><summary>Request body</summary>
 <pre><code>{
   "tableName": "&lt;table_name&gt;",
   "data": [
@@ -353,48 +389,53 @@ Prefer the FieldProxy app whenever possible — the token shown above is a conve
     { "col1": "value2", "col2": 456 }
   ]
 }</code></pre></details>
-<details><summary>Success response</summary>
+    <details><summary>Success response</summary>
 <pre><code>{
   "message": "Successfully inserted 2 rows into &lt;table_name&gt;",
   "rowsInserted": 2,
   "table": "&lt;table_name&gt;"
 }</code></pre></details>
-</div>
-<div class="endpoint">
-<div class="row"><span class="verb">POST</span><span class="path">/api/read</span></div>
-<p>Select rows by an exact-match condition (column = value AND column = value …).</p>
-<details><summary>Request body</summary>
+  </div>
+
+  <div class="endpoint">
+    <div class="row"><span class="verb">POST</span><span class="path">/api/read</span></div>
+    <p>Select rows by an exact-match condition (column = value AND column = value …).</p>
+    <details><summary>Request body</summary>
 <pre><code>{
   "tableName": "&lt;table_name&gt;",
   "condition": { "service_display_id": "SA-2026-00123" }
 }</code></pre></details>
-</div>
-<div class="endpoint">
-<div class="row"><span class="verb">POST</span><span class="path">/api/update</span></div>
-<p>Update column values on rows matching a condition.</p>
-<details><summary>Request body</summary>
+  </div>
+
+  <div class="endpoint">
+    <div class="row"><span class="verb">POST</span><span class="path">/api/update</span></div>
+    <p>Update column values on rows matching a condition.</p>
+    <details><summary>Request body</summary>
 <pre><code>{
   "tableName": "&lt;table_name&gt;",
   "data":      { "service_status": "COMPLETED" },
   "condition": { "service_display_id": "SA-2026-00123" }
 }</code></pre></details>
-</div>
-<div class="endpoint">
-<div class="row"><span class="verb">POST</span><span class="path">/api/delete</span></div>
-<p>Delete rows matching a condition. (Child tables cascade if <code>ON DELETE CASCADE</code> is set.)</p>
-<details><summary>Request body</summary>
+  </div>
+
+  <div class="endpoint">
+    <div class="row"><span class="verb">POST</span><span class="path">/api/delete</span></div>
+    <p>Delete rows matching a condition. (Child tables cascade if <code>ON DELETE CASCADE</code> is set.)</p>
+    <details><summary>Request body</summary>
 <pre><code>{
   "tableName": "&lt;table_name&gt;",
   "condition": { "service_display_id": "SA-2026-00123" }
 }</code></pre></details>
-</div>
-<div class="note">
-Live Swagger UI: <a href="https://api-india-1.fieldproxy.ai/api-docs/" target="_blank" rel="noopener">api-india-1.fieldproxy.ai/api-docs/</a>
-</div>
+  </div>
+
+  <div class="note">
+    Live Swagger UI: <a href="https://api-india-1.fieldproxy.ai/api-docs/" target="_blank" rel="noopener">api-india-1.fieldproxy.ai/api-docs/</a>
+  </div>
 </section>
+
 <section id="schema-overview">
-<h2>Database schema overview</h2>
-<p>6 tables — one carrier-agnostic master plus 5 children (1 carrier-specific, 4 generic).</p>
+  <h2>Database schema overview</h2>
+  <p>6 tables — one carrier-agnostic master plus 5 children (1 carrier-specific, 4 generic).</p>
 <pre><code>furlenco_partners                       (carrier master)
    └─ furlenco_technicians              (field staff)
         └─ furlenco_service_requests    (MASTER · 1 row per work order)
@@ -402,122 +443,645 @@ Live Swagger UI: <a href="https://api-india-1.fieldproxy.ai/api-docs/" target="_
              ├─ furlenco_service_updates         (1:N status timeline)
              ├─ furlenco_service_images          (1:N media)
              └─ furlenco_customer_ratings        (1:1 feedback)</code></pre>
-<p><strong>Pattern for new carriers:</strong> add <code>furlenco_service_request_lg</code> / <code>_whirlpool</code> as a 1:1 child mirroring the Haier table. The master never changes — only <code>carrier_type</code> takes a new value.</p>
+  <p><strong>Pattern for new carriers:</strong> add <code>furlenco_service_request_lg</code> / <code>_whirlpool</code> as a 1:1 child mirroring the Haier table. The master never changes — only <code>carrier_type</code> takes a new value.</p>
 </section>
+
+<!-- ===================================================================
+     TABLES
+=====================================================================-->
+
+<section id="t-partners" class="card">
+  <h3>1. furlenco_partners <span class="badge">carrier master</span></h3>
+  <p>Each partner / carrier (HAIER, LG, WHIRLPOOL …) is one row here. <code>partner_id</code> is referenced by <code>furlenco_technicians.partner_id</code> and <code>furlenco_service_requests.service_partner_id</code>.</p>
+  <table class="cols">
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="col">partner_id</td>       <td class="type">serial</td>       <td><span class="flag pk">PK</span></td></tr>
+      <tr><td class="col">partner_name</td>     <td class="type">varchar</td>      <td>NOT NULL</td></tr>
+      <tr><td class="col">contact_person</td>   <td class="type">varchar</td>      <td></td></tr>
+      <tr><td class="col">contact_phone</td>    <td class="type">varchar</td>      <td></td></tr>
+      <tr><td class="col">contact_email</td>    <td class="type">varchar</td>      <td></td></tr>
+      <tr><td class="col">address</td>          <td class="type">text</td>         <td></td></tr>
+      <tr><td class="col">integration_type</td> <td class="type">varchar</td>      <td>API / WEBHOOK / MANUAL</td></tr>
+      <tr><td class="col">regions_covered</td>  <td class="type">text[]</td>       <td>['South','North',...]</td></tr>
+      <tr><td class="col">is_active</td>        <td class="type">boolean</td>      <td>default true</td></tr>
+      <tr><td class="col">created_at</td>       <td class="type">timestamp</td>    <td></td></tr>
+      <tr><td class="col">updated_at</td>       <td class="type">timestamp</td>    <td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="t-technicians" class="card">
+  <h3>2. furlenco_technicians <span class="badge">field staff</span></h3>
+  <table class="cols">
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="col">technician_id</td>                 <td class="type">serial</td>     <td><span class="flag pk">PK</span></td></tr>
+      <tr><td class="col">technician_name</td>               <td class="type">varchar</td>    <td>NOT NULL</td></tr>
+      <tr><td class="col">technician_phone</td>              <td class="type">varchar</td>    <td></td></tr>
+      <tr><td class="col">technician_email</td>              <td class="type">varchar</td>    <td></td></tr>
+      <tr><td class="col">partner_id</td>                    <td class="type">integer</td>    <td><span class="flag fk">FK</span> furlenco_partners</td></tr>
+      <tr><td class="col">regions_covered</td>               <td class="type">text[]</td>     <td></td></tr>
+      <tr><td class="col">specialization</td>                <td class="type">text[]</td>     <td></td></tr>
+      <tr><td class="col">status</td>                        <td class="type">varchar</td>    <td>ACTIVE / OFFDUTY / TERMINATED</td></tr>
+      <tr><td class="col">is_active</td>                     <td class="type">boolean</td>    <td></td></tr>
+      <tr><td class="col">average_rating</td>                <td class="type">numeric</td>    <td>0.00 – 5.00</td></tr>
+      <tr><td class="col">total_jobs_completed</td>          <td class="type">integer</td>    <td></td></tr>
+      <tr><td class="col">average_completion_time_hours</td> <td class="type">numeric</td>    <td></td></tr>
+      <tr><td class="col">created_at</td>                    <td class="type">timestamp</td>  <td></td></tr>
+      <tr><td class="col">updated_at</td>                    <td class="type">timestamp</td>  <td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="t-requests" class="card">
+  <h3>3. furlenco_service_requests <span class="badge accent">MASTER</span></h3>
+  <p>One row per work order. Carrier-agnostic — every common field lives here. <code>carrier_type</code> tells you which partner-specific child to read (currently <code>service_request_haier</code>).</p>
+  <table class="cols">
+    <thead><tr><th>Column</th><th>Type</th><th>Maps from</th></tr></thead>
+    <tbody>
+      <tr><td class="col">request_id</td>            <td class="type">serial</td>        <td><span class="flag pk">PK</span> auto-generated · don't send</td></tr>
+      <tr><td class="col">service_display_id</td>    <td class="type">varchar</td>       <td><span class="flag uq">UNIQUE</span> serviceActivity.displayId · e.g. <code>SA-2026-00123</code></td></tr>
+      <tr><td class="col">user_action_id</td>        <td class="type">varchar</td>       <td>userActionId · <code>ORD2359989448</code></td></tr>
+      <tr><td class="col">pcid</td>                  <td class="type">varchar</td>       <td><span class="flag uq">UNIQUE</span> legacy channel id</td></tr>
+      <tr><td class="col">pcid_state</td>            <td class="type">varchar</td>       <td>legacy</td></tr>
+      <tr><td class="col">vertical</td>              <td class="type">varchar</td>       <td><code>FURLENCO_RENTAL</code></td></tr>
+      <tr><td class="col">carrier_type</td>          <td class="type">varchar</td>       <td>carrier · <code>HAIER</code></td></tr>
+      <tr><td class="col">service_partner</td>       <td class="type">varchar</td>       <td>label · <code>HAIER</code></td></tr>
+      <tr><td class="col">service_partner_id</td>    <td class="type">integer</td>       <td><span class="flag fk">FK</span> furlenco_partners</td></tr>
+      <tr><td class="col">assigned_technician_id</td><td class="type">integer</td>       <td><span class="flag fk">FK</span> furlenco_technicians</td></tr>
+      <tr><td class="col">source_channel</td>        <td class="type">integer</td>       <td>haierRequestPayload.SourceChannel</td></tr>
+      <tr><td class="col">partner_channel_id</td>    <td class="type">varchar</td>       <td>haierRequestPayload.ChannelId</td></tr>
+      <tr><td class="col">user_name</td>             <td class="type">varchar</td>       <td>userDetails.name</td></tr>
+      <tr><td class="col">user_contact_no</td>       <td class="type">varchar</td>       <td>userDetails.phone</td></tr>
+      <tr><td class="col">user_alternate_no</td>     <td class="type">varchar</td>       <td>from remark answer</td></tr>
+      <tr><td class="col">user_email</td>            <td class="type">varchar</td>       <td>userDetails.emailId</td></tr>
+      <tr><td class="col">country_code</td>          <td class="type">varchar</td>       <td><code>IN</code></td></tr>
+      <tr><td class="col">service_type</td>          <td class="type">varchar</td>       <td>serviceActivity.type · <code>MAINTENANCE</code></td></tr>
+      <tr><td class="col">created_at_partner</td>    <td class="type">timestamp</td>     <td>serviceActivity.createdAt</td></tr>
+      <tr><td class="col">partner_product_id</td>    <td class="type">integer</td>       <td>productDetails.id</td></tr>
+      <tr><td class="col">product_category</td>      <td class="type">varchar</td>       <td>e.g. <code>Washing Machine</code></td></tr>
+      <tr><td class="col">product_name</td>          <td class="type">varchar</td>       <td>productDetails.name</td></tr>
+      <tr><td class="col">product_display_name</td>  <td class="type">varchar</td>       <td>productDetails.displayName</td></tr>
+      <tr><td class="col">product_image_url</td>     <td class="type">text</td>          <td>productDetails.imageUrl</td></tr>
+      <tr><td class="col">product_issue</td>         <td class="type">text</td>          <td>customerInfo.primaryReasons[0]</td></tr>
+      <tr><td class="col">user_address</td>          <td class="type">text</td>          <td>addressDetails.address</td></tr>
+      <tr><td class="col">city</td>                  <td class="type">varchar</td>       <td></td></tr>
+      <tr><td class="col">state</td>                 <td class="type">varchar</td>       <td>addressDetails.stateName</td></tr>
+      <tr><td class="col">pincode</td>               <td class="type">varchar</td>       <td></td></tr>
+      <tr><td class="col">country</td>               <td class="type">varchar</td>       <td>default <code>IN</code></td></tr>
+      <tr><td class="col">zone</td>                  <td class="type">varchar</td>       <td></td></tr>
+      <tr><td class="col">location_coords</td>       <td class="type">numeric[]</td>     <td>[lat, lng]</td></tr>
+      <tr><td class="col">issue_description</td>     <td class="type">text</td>          <td>haierRequestPayload.IssueDescription</td></tr>
+      <tr><td class="col">preferred_visit_date</td>  <td class="type">date</td>          <td></td></tr>
+      <tr><td class="col">preferred_visit_time</td>  <td class="type">varchar</td>       <td><code>10:00-12:00</code></td></tr>
+      <tr><td class="col">purchase_date</td>         <td class="type">date</td>          <td></td></tr>
+      <tr><td class="col">delivery_date</td>         <td class="type">date</td>          <td></td></tr>
+      <tr><td class="col">dealer_name</td>           <td class="type">varchar</td>       <td></td></tr>
+      <tr><td class="col">customer_remarks</td>      <td class="type">jsonb</td>         <td>[{question, answer}, …]</td></tr>
+      <tr><td class="col">helpdesk_remarks</td>      <td class="type">text[]</td>        <td></td></tr>
+      <tr><td class="col">primary_reasons</td>       <td class="type">text[]</td>        <td></td></tr>
+      <tr><td class="col">primary_actions</td>       <td class="type">text[]</td>        <td></td></tr>
+      <tr><td class="col">detailed_remarks</td>      <td class="type">text</td>          <td>legacy free-text</td></tr>
+      <tr><td class="col">resolution_notes</td>      <td class="type">text</td>          <td>legacy free-text closure</td></tr>
+      <tr><td class="col">parts_required</td>        <td class="type">text</td>          <td>legacy</td></tr>
+      <tr><td class="col">priority</td>              <td class="type">varchar</td>       <td>default <code>NORMAL</code></td></tr>
+      <tr><td class="col">service_status</td>        <td class="type">varchar</td>       <td>CREATED · ASSIGNED · IN_PROGRESS · COMPLETED · CANCELLED · FAILED</td></tr>
+      <tr><td class="col">last_status_at</td>        <td class="type">timestamp</td>     <td></td></tr>
+      <tr><td class="col">performed_at</td>          <td class="type">timestamptz</td>   <td>webhook.performedAt</td></tr>
+      <tr><td class="col">performed_by</td>          <td class="type">varchar</td>       <td>webhook.performedBy</td></tr>
+      <tr><td class="col">carrier_work_order_no</td> <td class="type">varchar</td>       <td>haierResponse.WorkOrderNumber</td></tr>
+      <tr><td class="col">service_request_date</td>  <td class="type">timestamp</td>     <td></td></tr>
+      <tr><td class="col">submitted_date</td>        <td class="type">timestamp</td>     <td></td></tr>
+      <tr><td class="col">accepted_date</td>         <td class="type">timestamp</td>     <td></td></tr>
+      <tr><td class="col">service_start_date</td>    <td class="type">timestamp</td>     <td></td></tr>
+      <tr><td class="col">service_completion_date</td><td class="type">timestamp</td>    <td></td></tr>
+      <tr><td class="col">date_of_decision</td>      <td class="type">timestamp</td>     <td></td></tr>
+      <tr><td class="col">partner_raw_request</td>   <td class="type">jsonb</td>         <td>full inbound payload (audit)</td></tr>
+      <tr><td class="col">partner_raw_response</td>  <td class="type">jsonb</td>         <td>latest webhook (audit)</td></tr>
+      <tr><td class="col">created_at</td>            <td class="type">timestamp</td>     <td></td></tr>
+      <tr><td class="col">updated_at</td>            <td class="type">timestamp</td>     <td></td></tr>
+      <tr><td class="col">created_by</td>            <td class="type">varchar</td>       <td></td></tr>
+      <tr><td class="col">updated_by</td>            <td class="type">varchar</td>       <td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="t-haier" class="card">
+  <h3>4. service_request_haier <span class="badge accent">HAIER 1:1</span></h3>
+  <p>Populated only when <code>service_requests.carrier_type = 'HAIER'</code>. Holds every field of <code>haierRequestPayload</code> (work-order creation) and <code>haierResponse</code> (status webhook).</p>
+  <table class="cols">
+    <thead><tr><th>Column</th><th>Type</th><th>Maps from</th></tr></thead>
+    <tbody>
+      <tr><td class="col">id</td>                       <td class="type">serial</td>     <td><span class="flag pk">PK</span></td></tr>
+      <tr><td class="col">request_id</td>               <td class="type">integer</td>    <td><span class="flag uq">UNIQUE</span> <span class="flag fk">FK</span> furlenco_service_requests · ON DELETE CASCADE</td></tr>
+      <tr><td colspan="3"><strong style="color:var(--muted)">— from haierRequestPayload —</strong></td></tr>
+      <tr><td class="col">source_channel</td>           <td class="type">integer</td>    <td>SourceChannel · <code>34</code></td></tr>
+      <tr><td class="col">channel_id</td>               <td class="type">varchar</td>    <td>ChannelId</td></tr>
+      <tr><td class="col">haier_service_type</td>       <td class="type">varchar</td>    <td>ServiceType · <code>Customer Service</code></td></tr>
+      <tr><td class="col">product_category</td>         <td class="type">varchar</td>    <td>ProductCategory</td></tr>
+      <tr><td class="col">first_name</td>               <td class="type">varchar</td>    <td>FirstName</td></tr>
+      <tr><td class="col">mobile_phone</td>             <td class="type">varchar</td>    <td>MobilePhone</td></tr>
+      <tr><td class="col">country_code</td>             <td class="type">varchar</td>    <td>CountryCode</td></tr>
+      <tr><td class="col">location_state_name</td>      <td class="type">varchar</td>    <td>LocationStateName</td></tr>
+      <tr><td class="col">location_city_name</td>       <td class="type">varchar</td>    <td>LocationCityName</td></tr>
+      <tr><td class="col">location_locality_code</td>   <td class="type">varchar</td>    <td>LocationLocalityCode</td></tr>
+      <tr><td class="col">detailed_address</td>         <td class="type">text</td>       <td>DetailedAddress</td></tr>
+      <tr><td class="col">issue_description</td>        <td class="type">text</td>       <td>IssueDescription</td></tr>
+      <tr><td class="col">preferred_visit_date</td>     <td class="type">date</td>       <td>PreferredVisitDate</td></tr>
+      <tr><td class="col">preferred_visit_time</td>     <td class="type">varchar</td>    <td>PreferredVisitTime</td></tr>
+      <tr><td class="col">purchase_date</td>            <td class="type">date</td>       <td>PurchaseDate</td></tr>
+      <tr><td class="col">delivery_date</td>            <td class="type">date</td>       <td>DeliveryDate</td></tr>
+      <tr><td class="col">dealer_name</td>              <td class="type">varchar</td>    <td>DealerName</td></tr>
+      <tr><td class="col">raw_request</td>              <td class="type">jsonb</td>      <td>full haierRequestPayload</td></tr>
+      <tr><td colspan="3"><strong style="color:var(--muted)">— from haierResponse —</strong></td></tr>
+      <tr><td class="col">work_order_number</td>        <td class="type">varchar</td>    <td>WorkOrderNumber · <code>GH20251023000001</code></td></tr>
+      <tr><td class="col">status_code</td>              <td class="type">integer</td>    <td>Status</td></tr>
+      <tr><td class="col">sub_status_code</td>          <td class="type">integer</td>    <td>SubStatus</td></tr>
+      <tr><td class="col">status_description</td>       <td class="type">text</td>       <td>StatusDescription</td></tr>
+      <tr><td class="col">remark</td>                   <td class="type">text</td>       <td>Remark</td></tr>
+      <tr><td class="col">serial_number</td>            <td class="type">varchar</td>    <td>SN</td></tr>
+      <tr><td class="col">brand</td>                    <td class="type">varchar</td>    <td>Brand</td></tr>
+      <tr><td class="col">model_type</td>               <td class="type">varchar</td>    <td>ModelType</td></tr>
+      <tr><td class="col">product_group</td>            <td class="type">varchar</td>    <td>ProductGroup</td></tr>
+      <tr><td class="col">product_warranty</td>         <td class="type">varchar</td>    <td>ProductWarranty</td></tr>
+      <tr><td class="col">service_class</td>            <td class="type">varchar</td>    <td>ServiceClass</td></tr>
+      <tr><td class="col">rma_status</td>               <td class="type">varchar</td>    <td>RMAStatus</td></tr>
+      <tr><td class="col">technician_name</td>          <td class="type">varchar</td>    <td>TechnicianName</td></tr>
+      <tr><td class="col">technician_phone_number</td>  <td class="type">varchar</td>    <td>TechnicianPhoneNumber</td></tr>
+      <tr><td class="col">appointment_time</td>         <td class="type">timestamp</td>  <td>AppointmentTime</td></tr>
+      <tr><td class="col">change_time</td>              <td class="type">bigint</td>     <td>ChangeTime (epoch)</td></tr>
+      <tr><td class="col">haier_channel_id_resp</td>    <td class="type">varchar</td>    <td>ChannelId (response)</td></tr>
+      <tr><td class="col">fulfilment_media_urls</td>    <td class="type">text[]</td>     <td>webhook.mediaUrls</td></tr>
+      <tr><td class="col">enrichments</td>              <td class="type">text[]</td>     <td>webhook.enrichments</td></tr>
+      <tr><td class="col">champ_remarks</td>            <td class="type">text[]</td>     <td>webhook.champRemarks</td></tr>
+      <tr><td class="col">raw_response</td>             <td class="type">jsonb</td>      <td>full haierResponse</td></tr>
+      <tr><td class="col">created_at</td>               <td class="type">timestamp</td>  <td></td></tr>
+      <tr><td class="col">updated_at</td>               <td class="type">timestamp</td>  <td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="t-updates" class="card">
+  <h3>5. furlenco_service_updates <span class="badge">status timeline · 1:N</span></h3>
+  <p>One row per status webhook hit. Append-only.</p>
+  <table class="cols">
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="col">update_id</td>       <td class="type">serial</td>    <td><span class="flag pk">PK</span></td></tr>
+      <tr><td class="col">request_id</td>      <td class="type">integer</td>   <td><span class="flag fk">FK</span> furlenco_service_requests · CASCADE</td></tr>
+      <tr><td class="col">technician_id</td>   <td class="type">integer</td>   <td><span class="flag fk">FK</span> furlenco_technicians</td></tr>
+      <tr><td class="col">previous_status</td> <td class="type">varchar</td>   <td></td></tr>
+      <tr><td class="col">new_status</td>      <td class="type">varchar</td>   <td>NOT NULL</td></tr>
+      <tr><td class="col">update_type</td>     <td class="type">varchar</td>   <td>STATUS_WEBHOOK · MANUAL · SYSTEM</td></tr>
+      <tr><td class="col">notes</td>           <td class="type">text</td>      <td></td></tr>
+      <tr><td class="col">updated_by</td>      <td class="type">varchar</td>   <td></td></tr>
+      <tr><td class="col">created_at</td>      <td class="type">timestamp</td> <td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="t-images" class="card">
+  <h3>6. furlenco_service_images <span class="badge">media · 1:N</span></h3>
+  <table class="cols">
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="col">image_id</td>      <td class="type">serial</td>    <td><span class="flag pk">PK</span></td></tr>
+      <tr><td class="col">request_id</td>    <td class="type">integer</td>   <td><span class="flag fk">FK</span> furlenco_service_requests · CASCADE</td></tr>
+      <tr><td class="col">technician_id</td> <td class="type">integer</td>   <td><span class="flag fk">FK</span> furlenco_technicians</td></tr>
+      <tr><td class="col">image_url</td>     <td class="type">text</td>      <td>NOT NULL</td></tr>
+      <tr><td class="col">image_type</td>    <td class="type">varchar</td>   <td>ISSUE_PROOF · FULFILMENT_PROOF · SIGNATURE · PRODUCT</td></tr>
+      <tr><td class="col">description</td>   <td class="type">text</td>      <td></td></tr>
+      <tr><td class="col">uploaded_at</td>   <td class="type">timestamp</td> <td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="t-ratings" class="card">
+  <h3>7. furlenco_customer_ratings <span class="badge">feedback · 1:1</span></h3>
+  <table class="cols">
+    <thead><tr><th>Column</th><th>Type</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td class="col">rating_id</td>              <td class="type">serial</td>    <td><span class="flag pk">PK</span></td></tr>
+      <tr><td class="col">request_id</td>             <td class="type">integer</td>   <td><span class="flag fk">FK</span> furlenco_service_requests · CASCADE</td></tr>
+      <tr><td class="col">technician_id</td>          <td class="type">integer</td>   <td><span class="flag fk">FK</span> furlenco_technicians</td></tr>
+      <tr><td class="col">overall_rating</td>         <td class="type">integer</td>   <td>1 – 5</td></tr>
+      <tr><td class="col">quality_rating</td>         <td class="type">integer</td>   <td>1 – 5</td></tr>
+      <tr><td class="col">punctuality_rating</td>     <td class="type">integer</td>   <td>1 – 5</td></tr>
+      <tr><td class="col">professionalism_rating</td> <td class="type">integer</td>   <td>1 – 5</td></tr>
+      <tr><td class="col">would_recommend</td>        <td class="type">boolean</td>   <td></td></tr>
+      <tr><td class="col">customer_feedback</td>      <td class="type">text</td>      <td></td></tr>
+      <tr><td class="col">created_at</td>             <td class="type">timestamp</td> <td></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr/>
+
+<!-- ===================================================================
+     SAMPLES
+=====================================================================-->
+
+<section id="sample-insert">
+  <h2>Sample · Insert a work order</h2>
+  <p>The minimum a work-order row needs is <code>service_display_id</code> (unique, not null). Anything else is optional but you'll typically send the customer, address and product info too. <strong>Never send <code>request_id</code></strong> — it's auto-generated.</p>
+
+  <div class="code-wrap">
+    <button class="copy-btn" data-copy="ex-insert-curl">Copy</button>
+<pre id="ex-insert-curl"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/insert" \
+  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "tableName": "furlenco_service_requests",
+    "data": [
+      {
+        "service_display_id": "SA-2026-00123",
+        "user_action_id":     "ORD2359989448",
+        "pcid":               "ORD2359989448",
+        "vertical":           "FURLENCO_RENTAL",
+        "carrier_type":       "HAIER",
+        "service_partner":    "HAIER",
+        "service_type":       "MAINTENANCE",
+        "user_name":          "Rahul Sharma",
+        "user_contact_no":    "9876543210",
+        "user_alternate_no":  "+918847825095",
+        "user_email":         "rahul.sharma@example.com",
+        "country_code":       "IN",
+        "user_address":       "Flat 4B, Prestige Lakeside Habitat",
+        "city":               "Bengaluru",
+        "state":              "Karnataka",
+        "pincode":            "560103",
+        "country":            "IN",
+        "product_category":   "Washing Machine",
+        "product_name":       "SOFA",
+        "product_display_name": "3-Seater Fabric Sofa",
+        "product_image_url":  "https://assets.furlenco.com/plutus/products/7869/thumbnail/P.jpg",
+        "issue_description":  "Damaged Product - Drainage pipe is given broken",
+        "product_issue":      "Not Washing / Clothes Not Getting Clean",
+        "preferred_visit_date": "2026-05-07",
+        "preferred_visit_time": "10:00-12:00",
+        "purchase_date":      "2026-05-01",
+        "delivery_date":      "2026-05-01",
+        "dealer_name":        "House of Kieraya Ltd.",
+        "service_status":     "CREATED",
+        "priority":           "NORMAL"
+      }
+    ]
+  }'</code></pre>
+  </div>
+
+  <h3>Postman / Insomnia equivalent</h3>
+<pre><code>POST   https://api-india-1.fieldproxy.ai/api/insert
+Header x-api-key: &lt;FURLENCO_FIELDPROXY_API_KEY&gt;
+Header Content-Type: application/json
+Body   (raw, JSON) — see the JSON above</code></pre>
+
+  <h3>Sample response</h3>
+<pre><code>{
+  "message": "Successfully inserted 1 rows into furlenco_service_requests",
+  "rowsInserted": 1,
+  "table": "furlenco_service_requests"
+}</code></pre>
+</section>
+
+<section id="sample-haier">
+  <h2>Sample · Insert Haier payload (1:1 child)</h2>
+  <p>After inserting the master, fetch its <code>request_id</code> and use it here. The Haier table mirrors both <code>haierRequestPayload</code> (request) and <code>haierResponse</code> (later filled from webhook).</p>
+  <div class="code-wrap">
+    <button class="copy-btn" data-copy="ex-haier-curl">Copy</button>
+<pre id="ex-haier-curl"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/insert" \
+  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "tableName": "service_request_haier",
+    "data": [
+      {
+        "request_id":             16,
+        "source_channel":         34,
+        "channel_id":             "SA-2026-00123",
+        "haier_service_type":     "Customer Service",
+        "product_category":       "Washing Machine",
+        "first_name":             "Rahul Sharma",
+        "mobile_phone":           "9876543210",
+        "country_code":           "IN",
+        "location_state_name":    "Karnataka",
+        "location_city_name":     "Bengaluru",
+        "location_locality_code": "560103",
+        "detailed_address":       "Flat 4B, Prestige Lakeside Habitat",
+        "issue_description":      "Damaged Product - Drainage pipe is given broken",
+        "preferred_visit_date":   "2026-05-07",
+        "preferred_visit_time":   "10:00-12:00",
+        "purchase_date":          "2026-05-01",
+        "delivery_date":          "2026-05-01",
+        "dealer_name":            "House of Kieraya Ltd."
+      }
+    ]
+  }'</code></pre>
+  </div>
+</section>
+
+<section id="sample-status">
+  <h2>Sample · Push a status update</h2>
+  <p>When the status webhook fires (or a champ updates the order manually), two things happen: one row appended to <code>furlenco_service_updates</code>, and the master <code>service_status</code> updated.</p>
+
+  <h3>A · Append a status timeline row</h3>
+  <div class="code-wrap">
+    <button class="copy-btn" data-copy="ex-status-insert">Copy</button>
+<pre id="ex-status-insert"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/insert" \
+  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "tableName": "furlenco_service_updates",
+    "data": [
+      {
+        "request_id":      16,
+        "technician_id":   42,
+        "previous_status": "ASSIGNED",
+        "new_status":      "COMPLETED",
+        "update_type":     "STATUS_WEBHOOK",
+        "notes":           "Work Order In Process · shipment marked SERVICED",
+        "updated_by":      "Powlraj"
+      }
+    ]
+  }'</code></pre>
+  </div>
+
+  <h3>B · Update the master row</h3>
+  <div class="code-wrap">
+    <button class="copy-btn" data-copy="ex-master-update">Copy</button>
+<pre id="ex-master-update"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/update" \
+  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "tableName": "furlenco_service_requests",
+    "data": {
+      "service_status":          "COMPLETED",
+      "service_completion_date": "2026-01-31 15:24:48",
+      "performed_by":            "Powlraj",
+      "carrier_work_order_no":   "GH20251023000001"
+    },
+    "condition": { "service_display_id": "SA-2026-00123" }
+  }'</code></pre>
+  </div>
+
+  <h3>C · Attach fulfilment-proof images</h3>
+<pre><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/insert" \
+  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "tableName": "furlenco_service_images",
+    "data": [
+      {
+        "request_id":    16,
+        "technician_id": 42,
+        "image_url":     "https://production-lma-fulfillment-proof-bucket.s3.ap-south-1.amazonaws.com/lma/.../req-SH-3094274-1.jpg",
+        "image_type":    "FULFILMENT_PROOF",
+        "description":   "Webhook status COMPLETED"
+      }
+    ]
+  }'</code></pre>
+</section>
+
+<section id="sample-read">
+  <h2>Sample · Read &amp; filter</h2>
+  <div class="code-wrap">
+    <button class="copy-btn" data-copy="ex-read-curl">Copy</button>
+<pre id="ex-read-curl"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/read" \
+  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "tableName": "furlenco_service_requests",
+    "condition": { "service_display_id": "SA-2026-00123" }
+  }'</code></pre>
+  </div>
+  <p>The <code>condition</code> object becomes a <code>WHERE col = val AND col = val ...</code> clause — every key/value is ANDed together, only exact equality.</p>
+</section>
+
+<section id="sample-update">
+  <h2>Sample · Update a row</h2>
+  <div class="code-wrap">
+    <button class="copy-btn" data-copy="ex-update-curl">Copy</button>
+<pre id="ex-update-curl"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/update" \
+  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "tableName": "furlenco_service_requests",
+    "data":      { "priority": "HIGH" },
+    "condition": { "service_display_id": "SA-2026-00123" }
+  }'</code></pre>
+  </div>
+</section>
+
+<section id="sample-delete">
+  <h2>Sample · Delete a row</h2>
+  <div class="note warn">
+    <strong>Careful.</strong> Delete cascades to the Haier child + status updates + images + ratings. Run a <code>/api/read</code> first to confirm the target.
+  </div>
+  <div class="code-wrap">
+    <button class="copy-btn" data-copy="ex-delete-curl">Copy</button>
+<pre id="ex-delete-curl"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/delete" \
+  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
+  -H "Content-Type: application/json" \
+  --data '{
+    "tableName": "furlenco_service_requests",
+    "condition": { "service_display_id": "SA-2026-00123" }
+  }'</code></pre>
+  </div>
+</section>
+
+<section id="errors">
+  <h2>Common errors</h2>
+  <table class="cols">
+    <thead><tr><th>HTTP</th><th>Message</th><th>What to do</th></tr></thead>
+    <tbody>
+      <tr><td>400</td><td>Bulk insert failed · <code>duplicate key value violates unique constraint "furlenco_service_requests_pkey"</code></td><td>You sent <code>request_id</code> — remove it. PK is auto-generated.</td></tr>
+      <tr><td>400</td><td><code>duplicate key value violates unique constraint "furlenco_service_requests_pcid_key"</code></td><td><code>pcid</code> already exists. Use a fresh value.</td></tr>
+      <tr><td>400</td><td><code>duplicate key value violates unique constraint "furlenco_service_requests_service_display_id_key"</code></td><td><code>service_display_id</code> already exists. Use a fresh value.</td></tr>
+      <tr><td>400</td><td><code>null value in column "service_display_id" violates not-null constraint</code></td><td>Always provide <code>service_display_id</code> on insert.</td></tr>
+      <tr><td>400</td><td><code>insert or update on table "..." violates foreign key constraint</code></td><td>FK target row doesn't exist. Insert the parent first (partner / request / technician).</td></tr>
+      <tr><td>401</td><td>Unauthorized</td><td>Missing or expired <code>x-api-key</code>.</td></tr>
+      <tr><td>500</td><td>Internal Server Error</td><td>Server-side fault — try again or contact <a href="mailto:support@fieldproxy.com">support@fieldproxy.com</a>.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="contract">
+  <h2>Furlenco × FieldProxy API contract (inbound)</h2>
+  <p>These are the endpoints Furlenco exposes to FieldProxy, taken from <em>"Furlenco | Field Proxy API Contracts"</em> (PDF). Use them when sending data back to Furlenco.</p>
+
+  <div class="endpoint">
+    <div class="row"><span class="verb">POST</span><span class="path">https://st-portkey.furlenco.com/api/v1/login/generate-token</span></div>
+    <p>Get a JWT (60-minute TTL).</p>
+<pre><code>Headers
+  X-Client-ID:      &lt;client-id&gt;
+  X-Client-Secret:  &lt;client-secret&gt;
+
+200 OK
+  { "authToken": "eyJ..." }</code></pre>
+  </div>
+
+  <div class="endpoint">
+    <div class="row"><span class="verb">POST</span><span class="path">https://st-portkey.furlenco.com/api/v1/fieldproxy/webhook/service-activity-status</span></div>
+    <p>Push a status update for a work order. Headers: <code>X-Client-ID</code> + <code>X-Auth-Key</code> (the JWT from above).</p>
+<pre><code>Body example
+{
+  "serviceActivityId": "SA-2026-00123",
+  "status":            "COMPLETED",
+  "mediaUrls":         [ "https://.../proof.jpg" ],
+  "performedAt":       "2026-01-31 15:24:48 UTC",
+  "performedBy":       "Powlraj",
+  "champRemarks":      [""],
+  "haierResponse": {
+    "WorkOrderNumber":  "GH20251023000001",
+    "Status":           2,
+    "SubStatus":        2,
+    "StatusDescription":"Work Order In Process",
+    "SN":               "BK0YH70080HSIK8V0074",
+    ...
+  }
+}</code></pre>
+  </div>
+</section>
+
+<footer>
+  <p>
+    Furlenco × FieldProxy integration guide · last updated <span id="updated">2026-05-14</span>.<br/>
+    Database introspection · <code>SELECT column_name, data_type, table_name FROM information_schema.columns WHERE table_schema = 'public'</code><br/>
+    Questions? <a href="mailto:support@fieldproxy.com">support@fieldproxy.com</a>
+  </p>
+</footer>
+
 </main>
 </div>
+
 <script>
-document.querySelectorAll('aside nav a').forEach(a => {
-a.addEventListener('click', e => {
-const id = a.getAttribute('href');
-if (id.startsWith('#')) {
-const el = document.querySelector(id);
-if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-}
-});
-});
-document.querySelectorAll('.copy-btn').forEach(b => {
-b.addEventListener('click', () => {
-const id = b.getAttribute('data-copy');
-const el = document.getElementById(id);
-if (!el) return;
-navigator.clipboard.writeText(el.innerText).then(() => {
-const t = b.innerText; b.innerText = 'Copied ✓';
-setTimeout(() => b.innerText = t, 1200);
-});
-});
-});
-const ENC = {
-iterations: 250000,
-saltB64:    "8ZzjApJJMQTI4ig11nT15g==",
-ivB64:      "gYFTOQsbgxh16cJP",
-cipherB64:  "kyxwjzztI7Nc/0UvxqfXx6nkoXed/eyXI/llg7zYyk+welI4olG3my+3izLX1X530RpN5aVXCmYDzc/GqWK1dqoOLu0mJC4S+qIawmcCe2mIQL2d/9/QtGsvakBXqy9pLd0Ejbr6eCpm5ikd6lYIO3pzmKFC7sZoXWljsvCnUGIP8aO3HwntAD6usTekWscqrH+AFh/W9Ipgzboyl0higjH13uSpU6BcOUwLKosVyTs4mGWNGgfln4fT9P4wUvVyETqB6J+preqxWsCf3jZSlEkAoA=="
-};
-function b64ToBytes(s) {
-const bin = atob(s);
-const arr = new Uint8Array(bin.length);
-for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-return arr;
-}
-async function unlockApiKey(password) {
-if (!window.crypto || !window.crypto.subtle) {
-throw new Error('Web Crypto API unavailable in this browser.');
-}
-const salt   = b64ToBytes(ENC.saltB64);
-const iv     = b64ToBytes(ENC.ivB64);
-const cipher = b64ToBytes(ENC.cipherB64);
-const pwKey = await crypto.subtle.importKey(
-'raw',
-new TextEncoder().encode(password),
-{ name: 'PBKDF2' },
-false,
-['deriveKey']
-);
-const aesKey = await crypto.subtle.deriveKey(
-{ name: 'PBKDF2', salt, iterations: ENC.iterations, hash: 'SHA-256' },
-pwKey,
-{ name: 'AES-GCM', length: 256 },
-false,
-['decrypt']
-);
-const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, aesKey, cipher);
-return new TextDecoder().decode(plain);
-}
-const $form   = document.getElementById('apikey-unlock');
-const $pwd    = document.getElementById('apikey-pwd');
-const $err    = document.getElementById('apikey-error');
-const $body   = document.getElementById('apikey-body');
-const $reveal = document.getElementById('apikey-revealed');
-const $value  = document.querySelector('#apikey-value code');
-const $lock   = document.getElementById('lock-icon');
-const $copy   = document.getElementById('apikey-copy');
-const $hide   = document.getElementById('apikey-hide');
-if ($form) {
-$form.addEventListener('submit', async (e) => {
-e.preventDefault();
-$err.hidden = true;
-const btn = $form.querySelector('button');
-btn.disabled = true; btn.textContent = 'Unlocking…';
-try {
-const apiKey = await unlockApiKey($pwd.value);
-$value.textContent = apiKey;
-$body.hidden = true;
-$reveal.hidden = false;
-$lock.textContent = '🔓';
-$pwd.value = '';
-} catch (err) {
-$err.hidden = false;
-if (err && err.message && err.message.indexOf('Web Crypto') !== -1) {
-$err.innerHTML = 'This preview is running in a non-secure context, so the Web Crypto API is disabled. Open the published <code>https://</code> URL (GitHub Pages, Netlify, etc.) or run a local HTTPS server — the password will work there.';
-} else if (!window.isSecureContext) {
-$err.innerHTML = 'Web Crypto requires <code>https://</code> or <code>localhost</code>. This page is being served from an insecure context, so unlock cannot run. Publish to GitHub Pages and try there.';
-} else {
-$err.textContent = 'Incorrect password. Try again.';
-}
-$pwd.focus(); $pwd.select();
-} finally {
-btn.disabled = false; btn.textContent = 'Unlock';
-}
-});
-}
-if ($copy) {
-$copy.addEventListener('click', () => {
-navigator.clipboard.writeText($value.textContent).then(() => {
-const t = $copy.textContent;
-$copy.textContent = 'Copied ✓';
-setTimeout(() => $copy.textContent = t, 1200);
-});
-});
-}
-if ($hide) {
-$hide.addEventListener('click', () => {
-$reveal.hidden = true;
-$body.hidden = false;
-$value.textContent = '';
-$lock.textContent = '🔒';
-$pwd.focus();
-});
-}
+  // Smooth scroll on internal nav
+  document.querySelectorAll('aside nav a').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.startsWith('#')) {
+        const el = document.querySelector(id);
+        if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      }
+    });
+  });
+  // Copy-to-clipboard buttons
+  document.querySelectorAll('.copy-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      const id = b.getAttribute('data-copy');
+      const el = document.getElementById(id);
+      if (!el) return;
+      navigator.clipboard.writeText(el.innerText).then(() => {
+        const t = b.innerText; b.innerText = 'Copied ✓';
+        setTimeout(() => b.innerText = t, 1200);
+      });
+    });
+  });
+
+  /* ----------------------------------------------------------------------
+     Password-protected API key
+     Algorithm : AES-GCM-256 with key derived from password via PBKDF2-SHA256.
+     The ciphertext below is the live JWT, encrypted with the team password.
+     ---------------------------------------------------------------------- */
+  const ENC = {
+    iterations: 250000,
+    saltB64:    "8ZzjApJJMQTI4ig11nT15g==",
+    ivB64:      "gYFTOQsbgxh16cJP",
+    cipherB64:  "kyxwjzztI7Nc/0UvxqfXx6nkoXed/eyXI/llg7zYyk+welI4olG3my+3izLX1X530RpN5aVXCmYDzc/GqWK1dqoOLu0mJC4S+qIawmcCe2mIQL2d/9/QtGsvakBXqy9pLd0Ejbr6eCpm5ikd6lYIO3pzmKFC7sZoXWljsvCnUGIP8aO3HwntAD6usTekWscqrH+AFh/W9Ipgzboyl0higjH13uSpU6BcOUwLKosVyTs4mGWNGgfln4fT9P4wUvVyETqB6J+preqxWsCf3jZSlEkAoA=="
+  };
+
+  function b64ToBytes(s) {
+    const bin = atob(s);
+    const arr = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return arr;
+  }
+
+  async function unlockApiKey(password) {
+    if (!window.crypto || !window.crypto.subtle) {
+      throw new Error('Web Crypto API unavailable in this browser.');
+    }
+    const salt   = b64ToBytes(ENC.saltB64);
+    const iv     = b64ToBytes(ENC.ivB64);
+    const cipher = b64ToBytes(ENC.cipherB64);
+    const pwKey = await crypto.subtle.importKey(
+      'raw',
+      new TextEncoder().encode(password),
+      { name: 'PBKDF2' },
+      false,
+      ['deriveKey']
+    );
+    const aesKey = await crypto.subtle.deriveKey(
+      { name: 'PBKDF2', salt, iterations: ENC.iterations, hash: 'SHA-256' },
+      pwKey,
+      { name: 'AES-GCM', length: 256 },
+      false,
+      ['decrypt']
+    );
+    const plain = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, aesKey, cipher);
+    return new TextDecoder().decode(plain);
+  }
+
+  const $form   = document.getElementById('apikey-unlock');
+  const $pwd    = document.getElementById('apikey-pwd');
+  const $err    = document.getElementById('apikey-error');
+  const $body   = document.getElementById('apikey-body');
+  const $reveal = document.getElementById('apikey-revealed');
+  const $value  = document.querySelector('#apikey-value code');
+  const $lock   = document.getElementById('lock-icon');
+  const $copy   = document.getElementById('apikey-copy');
+  const $hide   = document.getElementById('apikey-hide');
+
+  if ($form) {
+    $form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      $err.hidden = true;
+      const btn = $form.querySelector('button');
+      btn.disabled = true; btn.textContent = 'Unlocking…';
+      try {
+        const apiKey = await unlockApiKey($pwd.value);
+        $value.textContent = apiKey;
+        $body.hidden = true;
+        $reveal.hidden = false;
+        $lock.textContent = '🔓';
+        $pwd.value = '';
+      } catch (err) {
+        $err.hidden = false;
+        if (err && err.message && err.message.indexOf('Web Crypto') !== -1) {
+          $err.innerHTML = 'This preview is running in a non-secure context, so the Web Crypto API is disabled. ' +
+                           'Open the published <code>https://</code> URL (GitHub Pages, Netlify, etc.) ' +
+                           'or run a local HTTPS server — the password will work there.';
+        } else if (!window.isSecureContext) {
+          $err.innerHTML = 'Web Crypto requires <code>https://</code> or <code>localhost</code>. ' +
+                           'This page is being served from an insecure context, so unlock cannot run. ' +
+                           'Publish to GitHub Pages and try there.';
+        } else {
+          $err.textContent = 'Incorrect password. Try again.';
+        }
+        $pwd.focus(); $pwd.select();
+      } finally {
+        btn.disabled = false; btn.textContent = 'Unlock';
+      }
+    });
+  }
+  if ($copy) {
+    $copy.addEventListener('click', () => {
+      navigator.clipboard.writeText($value.textContent).then(() => {
+        const t = $copy.textContent;
+        $copy.textContent = 'Copied ✓';
+        setTimeout(() => $copy.textContent = t, 1200);
+      });
+    });
+  }
+  if ($hide) {
+    $hide.addEventListener('click', () => {
+      $reveal.hidden = true;
+      $body.hidden = false;
+      $value.textContent = '';
+      $lock.textContent = '🔒';
+      $pwd.focus();
+    });
+  }
 </script>
 </body>
 </html>
