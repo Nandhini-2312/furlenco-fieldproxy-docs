@@ -272,17 +272,9 @@
     <a href="#endpoints">REST endpoints</a>
     <div class="grp">Database</div>
     <a href="#schema-overview">Schema overview</a>
-    <a href="#t-partners">furlenco_partners</a>
-    <a href="#t-technicians">furlenco_technicians</a>
-    <a href="#t-requests">furlenco_service_requests</a>
-    <a href="#t-haier">service_request_haier</a>
-    <a href="#t-updates">furlenco_service_updates</a>
-    <a href="#t-images">furlenco_service_images</a>
-    <a href="#t-ratings">furlenco_customer_ratings</a>
+    <a href="#t-api-log">furlenco_api_log</a>
     <div class="grp">Samples</div>
     <a href="#sample-insert">Insert a work order</a>
-    <a href="#sample-haier">Insert Haier payload</a>
-    <a href="#sample-status">Push a status update</a>
     <a href="#sample-read">Read &amp; filter</a>
     <a href="#sample-update">Update a row</a>
     <a href="#sample-delete">Delete a row</a>
@@ -342,6 +334,15 @@
 
   <h3>2 · API token (<code>x-api-key</code>)</h3>
   <p>The token is a JWT visible inside the FieldProxy app's API-tokens screen. Pass it as the <code>x-api-key</code> header on every <code>/api/*</code> call. Treat it like a database password — never commit it to source control.</p>
+  <table class="cols">
+    <thead><tr><th>Property</th><th>Value</th></tr></thead>
+    <tbody>
+      <tr><td>Token type</td><td><code>api_key</code> (JWT, HS256)</td></tr>
+      <tr><td>Validity</td><td><strong>30 days</strong> — re-generate from the FieldProxy app's API-tokens screen before expiry</td></tr>
+      <tr><td>Embedded claims</td><td><code>userid</code>, <code>tenant_id</code>, <code>type</code>, <code>jti</code>, <code>iat</code>, <code>exp</code></td></tr>
+      <tr><td>Header on every call</td><td><code>x-api-key: &lt;JWT&gt;</code></td></tr>
+    </tbody>
+  </table>
 
   <div class="locked-box">
     <div class="locked-header">
@@ -435,21 +436,49 @@
 
 <section id="schema-overview">
   <h2>Database schema overview</h2>
-  <p>6 tables — one carrier-agnostic master plus 5 children (1 carrier-specific, 4 generic).</p>
-<pre><code>furlenco_partners                       (carrier master)
-   └─ furlenco_technicians              (field staff)
-        └─ furlenco_service_requests    (MASTER · 1 row per work order)
-             ├─ service_request_haier   (1:1 Haier-specific)
-             ├─ furlenco_service_updates         (1:N status timeline)
-             ├─ furlenco_service_images          (1:N media)
-             └─ furlenco_customer_ratings        (1:1 feedback)</code></pre>
-  <p><strong>Pattern for new carriers:</strong> add <code>furlenco_service_request_lg</code> / <code>_whirlpool</code> as a 1:1 child mirroring the Haier table. The master never changes — only <code>carrier_type</code> takes a new value.</p>
+  <p>One table — <code>furlenco_api_log</code> — stores every inbound work-order request from Furlenco. Top-level scalars are typed; the nested objects (<code>userDetails</code>, <code>serviceActivity</code>, <code>productDetails</code>, <code>addressDetails</code>, <code>haierRequestPayload</code>) land in <code>JSONB</code> columns so the contract can evolve without schema migrations.</p>
+<pre><code>furlenco_api_log   (1 row per inbound Furlenco work-order POST)
+   ├─ id                      integer    auto-generated PK
+   ├─ carrier                 varchar    "HAIER" / "LG" / ...
+   ├─ user_action_id          varchar    e.g. "ORD2359989448"
+   ├─ vertical                varchar    "FURLENCO_RENTAL"
+   ├─ user_details            jsonb      { name, phone, alternatePhone, emailId }
+   ├─ service_activity        jsonb      { displayId, type, status, priority, dates,
+   │                                       customerInteractionDetails { ... } }
+   ├─ product_details         jsonb      { id, name, displayName, category, imageUrl }
+   ├─ address_details         jsonb      { pcid, pcidState, address, city, zone,
+   │                                       stateName, pincode, country }
+   ├─ received_at             timestamp  when FieldProxy received the request
+   └─ haier_request_payload   jsonb      full Haier-specific block (17 keys)</code></pre>
+  <p><strong>Pattern for new carriers</strong> (LG, Whirlpool, Samsung …) — store the partner-specific block in its own JSONB column (<code>lg_request_payload</code>, <code>whirlpool_request_payload</code>) without changing existing rows.</p>
 </section>
 
 <!-- ===================================================================
      TABLES
 =====================================================================-->
 
+<section id="t-api-log" class="card">
+  <h3>0. furlenco_api_log <span class="badge accent">inbound · JSON envelope</span></h3>
+  <p>Raw inbound API log. One row per work-order request Furlenco posts to FieldProxy — stores the partner's JSON envelope verbatim, nested objects landing in <code>JSONB</code> columns. Use this when you want the contract preserved as-sent for audit / replay before any normalisation into the other tables.</p>
+  <table class="cols">
+    <thead><tr><th>Column</th><th>Type</th><th>Maps from payload</th></tr></thead>
+    <tbody>
+      <tr><td class="col">id</td>                    <td class="type">integer</td>    <td><span class="flag pk">PK</span> auto-generated · don't send</td></tr>
+      <tr><td class="col">carrier</td>               <td class="type">varchar</td>     <td><code>carrier</code> · e.g. <code>HAIER</code></td></tr>
+      <tr><td class="col">user_action_id</td>        <td class="type">varchar</td>     <td><code>userActionId</code></td></tr>
+      <tr><td class="col">vertical</td>              <td class="type">varchar</td>     <td><code>vertical</code> · <code>FURLENCO_RENTAL</code></td></tr>
+      <tr><td class="col">user_details</td>          <td class="type">jsonb</td>       <td><code>userDetails</code> · { name, phone, alternatePhone, emailId }</td></tr>
+      <tr><td class="col">service_activity</td>      <td class="type">jsonb</td>       <td><code>serviceActivity</code> · displayId, type, status, priority, all dates, interaction details</td></tr>
+      <tr><td class="col">product_details</td>       <td class="type">jsonb</td>       <td><code>productDetails</code> · id, name, displayName, category, imageUrl</td></tr>
+      <tr><td class="col">address_details</td>       <td class="type">jsonb</td>       <td><code>addressDetails</code> · pcid, pcidState, address, city, zone, stateName, pincode, country</td></tr>
+      <tr><td class="col">received_at</td>           <td class="type">timestamp</td>   <td>when FieldProxy received the request · default <code>NOW()</code></td></tr>
+      <tr><td class="col">haier_request_payload</td> <td class="type">jsonb</td>       <td><code>haierRequestPayload</code> · full Haier-specific block (17 fields)</td></tr>
+    </tbody>
+  </table>
+  <p>See the sample insert under <a href="#sample-insert">Sample · Insert a work order</a> for the full payload shape.</p>
+</section>
+
+<!-- Legacy normalised tables removed — only furlenco_api_log is in scope.
 <section id="t-partners" class="card">
   <h3>1. furlenco_partners <span class="badge">carrier master</span></h3>
   <p>Each partner / carrier (HAIER, LG, WHIRLPOOL …) is one row here. <code>partner_id</code> is referenced by <code>furlenco_technicians.partner_id</code> and <code>furlenco_service_requests.service_partner_id</code>.</p>
@@ -675,6 +704,7 @@
     </tbody>
   </table>
 </section>
+-->
 
 <hr/>
 
@@ -684,190 +714,145 @@
 
 <section id="sample-insert">
   <h2>Sample · Insert a work order</h2>
-  <p>The minimum a work-order row needs is <code>service_display_id</code> (unique, not null). Anything else is optional but you'll typically send the customer, address and product info too. <strong>Never send <code>request_id</code></strong> — it's auto-generated.</p>
+  <p>Post the full Furlenco work-order envelope to the <code>furlenco_api_log</code> table — one row per inbound request. Top-level scalars (<code>carrier</code>, <code>user_action_id</code>, <code>vertical</code>) are typed; nested objects (<code>user_details</code>, <code>service_activity</code>, <code>product_details</code>, <code>address_details</code>, <code>haier_request_payload</code>) land in <code>JSONB</code> columns as-sent.</p>
 
   <div class="code-wrap">
     <button class="copy-btn" data-copy="ex-insert-curl">Copy</button>
-<pre id="ex-insert-curl"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/insert" \
-  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
-  -H "Content-Type: application/json" \
+<pre id="ex-insert-curl"><code>curl --request POST 'https://api-india-1.fieldproxy.ai/api/insert' \
+  --header 'x-api-key: &lt;YOUR_API_KEY&gt;' \
+  --header 'Content-Type: application/json' \
   --data '{
-    "tableName": "furlenco_service_requests",
-    "data": [
-      {
-        "service_display_id": "SA-2026-00123",
-        "user_action_id":     "ORD2359989448",
-        "pcid":               "ORD2359989448",
-        "vertical":           "FURLENCO_RENTAL",
-        "carrier_type":       "HAIER",
-        "service_partner":    "HAIER",
-        "service_type":       "MAINTENANCE",
-        "user_name":          "Rahul Sharma",
-        "user_contact_no":    "9876543210",
-        "user_alternate_no":  "+918847825095",
-        "user_email":         "rahul.sharma@example.com",
-        "country_code":       "IN",
-        "user_address":       "Flat 4B, Prestige Lakeside Habitat",
-        "city":               "Bengaluru",
-        "state":              "Karnataka",
-        "pincode":            "560103",
-        "country":            "IN",
-        "product_category":   "Washing Machine",
-        "product_name":       "SOFA",
-        "product_display_name": "3-Seater Fabric Sofa",
-        "product_image_url":  "https://assets.furlenco.com/plutus/products/7869/thumbnail/P.jpg",
-        "issue_description":  "Damaged Product - Drainage pipe is given broken",
-        "product_issue":      "Not Washing / Clothes Not Getting Clean",
-        "preferred_visit_date": "2026-05-07",
-        "preferred_visit_time": "10:00-12:00",
-        "purchase_date":      "2026-05-01",
-        "delivery_date":      "2026-05-01",
-        "dealer_name":        "House of Kieraya Ltd.",
-        "service_status":     "CREATED",
-        "priority":           "NORMAL"
+  "tableName": "furlenco_api_log",
+  "data": [
+    {
+      "carrier": "HAIER",
+      "user_action_id": "ORD2359989448",
+      "vertical": "FURLENCO_RENTAL",
+      "user_details": {
+        "name": "Rahul Sharma",
+        "phone": "9876543210",
+        "alternatePhone": "+918847825095",
+        "emailId": "rahul.sharma@example.com"
+      },
+      "service_activity": {
+        "displayId": "SA-2026-00202352",
+        "type": "MAINTENANCE",
+        "status": "PENDING",
+        "priority": "NORMAL",
+        "createdAt": "2026-05-05T08:30:00",
+        "submittedDate": "2026-05-05 08:30:00",
+        "serviceRequestDate": "2026-05-05 08:30:00",
+        "dateOfDecision": "2026-05-05 08:30:00",
+        "acceptedDate": "2026-05-06 09:00:00",
+        "serviceStartDate": "2026-05-07 10:00:00",
+        "serviceCompletionDate": "2026-05-07 12:00:00",
+        "servicePartner": "House of Kieraya Ltd.",
+        "issueDescription": "Damaged Product - Drainage pipe is given broken",
+        "detailedRemarks": "I want a servicing and cleaning of my system",
+        "resolutionNotes": "Pending technician visit",
+        "partsRequired": "Drainage pipe",
+        "customerInteractionDetails": {
+          "customerInfo": {
+            "primaryReasons": ["Not Washing / Clothes Not Getting Clean"],
+            "mediaUrls": [
+              "https://static-ap-mi.surveysparrow.com/68/1762081568665__2be228230721bf47fafdbbbd61d218ba1754e02100b87f7b__IMG_20251102_163451.jpg",
+              "https://static-ap-mi.surveysparrow.com/68/1762081574853__10ed1bc5a3f61c6751f2472a56bf7c747aa1be9e0982b522__IMG_20251102_163410.jpg"
+            ]
+          },
+          "helpDeskInfo": {
+            "remarks": ["Please check the issue on customer request"],
+            "primaryActions": ["Service Required"]
+          }
+        }
+      },
+      "product_details": {
+        "id": 4021,
+        "name": "SOFA",
+        "displayName": "3-Seater Fabric Sofa",
+        "category": "Washing Machine",
+        "imageUrl": "https://assets.furlenco.com/plutus/products/7869/thumbnail/P.jpg"
+      },
+      "address_details": {
+        "pcid": "110123",
+        "pcidState": "ACTIVE",
+        "address": "Flat 4B, Prestige Lakeside Habitat",
+        "city": "Bengaluru",
+        "zone": "South",
+        "stateName": "Karnataka",
+        "pincode": "560103",
+        "country": "IN"
+      },
+      "haier_request_payload": {
+        "SourceChannel": 34,
+        "ChannelId": "SA-2026-00123",
+        "ServiceType": "Customer Service",
+        "ProductCategory": "Washing Machine",
+        "PurchaseDate": "2026-05-01",
+        "PreferredVisitDate": "2026-05-07",
+        "PreferredVisitTime": "10:00-12:00",
+        "IssueDescription": "Damaged Product - Drainage pipe is given broken",
+        "FirstName": "Rahul Sharma",
+        "MobilePhone": "9876543210",
+        "CountryCode": "IN",
+        "LocationStateName": "Karnataka",
+        "LocationCityName": "Bengaluru",
+        "LocationLocalityCode": "560103",
+        "DetailedAddress": "Flat 4B, Prestige Lakeside Habitat",
+        "DeliveryDate": "2026-05-01",
+        "DealerName": "House of Kieraya Ltd."
       }
-    ]
-  }'</code></pre>
+    }
+  ]
+}'</code></pre>
   </div>
 
-  <h3>Postman / Insomnia equivalent</h3>
-<pre><code>POST   https://api-india-1.fieldproxy.ai/api/insert
-Header x-api-key: &lt;FURLENCO_FIELDPROXY_API_KEY&gt;
-Header Content-Type: application/json
-Body   (raw, JSON) — see the JSON above</code></pre>
+  <h3>Postman / Insomnia setup</h3>
+<pre><code>Method  POST
+URL     https://api-india-1.fieldproxy.ai/api/insert
+Header  x-api-key:     &lt;YOUR_API_KEY&gt;
+Header  Content-Type:  application/json
+Body    raw / JSON — paste the JSON body from the curl above</code></pre>
 
   <h3>Sample response</h3>
 <pre><code>{
-  "message": "Successfully inserted 1 rows into furlenco_service_requests",
+  "message": "Successfully inserted 1 rows into furlenco_api_log",
   "rowsInserted": 1,
-  "table": "furlenco_service_requests"
+  "table": "furlenco_api_log"
 }</code></pre>
-</section>
 
-<section id="sample-haier">
-  <h2>Sample · Insert Haier payload (1:1 child)</h2>
-  <p>After inserting the master, fetch its <code>request_id</code> and use it here. The Haier table mirrors both <code>haierRequestPayload</code> (request) and <code>haierResponse</code> (later filled from webhook).</p>
-  <div class="code-wrap">
-    <button class="copy-btn" data-copy="ex-haier-curl">Copy</button>
-<pre id="ex-haier-curl"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/insert" \
-  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
-  -H "Content-Type: application/json" \
-  --data '{
-    "tableName": "service_request_haier",
-    "data": [
-      {
-        "request_id":             16,
-        "source_channel":         34,
-        "channel_id":             "SA-2026-00123",
-        "haier_service_type":     "Customer Service",
-        "product_category":       "Washing Machine",
-        "first_name":             "Rahul Sharma",
-        "mobile_phone":           "9876543210",
-        "country_code":           "IN",
-        "location_state_name":    "Karnataka",
-        "location_city_name":     "Bengaluru",
-        "location_locality_code": "560103",
-        "detailed_address":       "Flat 4B, Prestige Lakeside Habitat",
-        "issue_description":      "Damaged Product - Drainage pipe is given broken",
-        "preferred_visit_date":   "2026-05-07",
-        "preferred_visit_time":   "10:00-12:00",
-        "purchase_date":          "2026-05-01",
-        "delivery_date":          "2026-05-01",
-        "dealer_name":            "House of Kieraya Ltd."
-      }
-    ]
-  }'</code></pre>
+  <div class="note">
+    <strong>Why nested <code>JSONB</code> instead of flat columns?</strong> The Furlenco contract evolves (new carriers, new fields) — keeping each block as <code>JSONB</code> means a contract change doesn't require a schema migration. Indexed expressions on common keys (e.g. <code>service_activity-&gt;&gt;'displayId'</code>) keep queries fast.
   </div>
-</section>
-
-<section id="sample-status">
-  <h2>Sample · Push a status update</h2>
-  <p>When the status webhook fires (or a champ updates the order manually), two things happen: one row appended to <code>furlenco_service_updates</code>, and the master <code>service_status</code> updated.</p>
-
-  <h3>A · Append a status timeline row</h3>
-  <div class="code-wrap">
-    <button class="copy-btn" data-copy="ex-status-insert">Copy</button>
-<pre id="ex-status-insert"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/insert" \
-  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
-  -H "Content-Type: application/json" \
-  --data '{
-    "tableName": "furlenco_service_updates",
-    "data": [
-      {
-        "request_id":      16,
-        "technician_id":   42,
-        "previous_status": "ASSIGNED",
-        "new_status":      "COMPLETED",
-        "update_type":     "STATUS_WEBHOOK",
-        "notes":           "Work Order In Process · shipment marked SERVICED",
-        "updated_by":      "Powlraj"
-      }
-    ]
-  }'</code></pre>
-  </div>
-
-  <h3>B · Update the master row</h3>
-  <div class="code-wrap">
-    <button class="copy-btn" data-copy="ex-master-update">Copy</button>
-<pre id="ex-master-update"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/update" \
-  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
-  -H "Content-Type: application/json" \
-  --data '{
-    "tableName": "furlenco_service_requests",
-    "data": {
-      "service_status":          "COMPLETED",
-      "service_completion_date": "2026-01-31 15:24:48",
-      "performed_by":            "Powlraj",
-      "carrier_work_order_no":   "GH20251023000001"
-    },
-    "condition": { "service_display_id": "SA-2026-00123" }
-  }'</code></pre>
-  </div>
-
-  <h3>C · Attach fulfilment-proof images</h3>
-<pre><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/insert" \
-  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
-  -H "Content-Type: application/json" \
-  --data '{
-    "tableName": "furlenco_service_images",
-    "data": [
-      {
-        "request_id":    16,
-        "technician_id": 42,
-        "image_url":     "https://production-lma-fulfillment-proof-bucket.s3.ap-south-1.amazonaws.com/lma/.../req-SH-3094274-1.jpg",
-        "image_type":    "FULFILMENT_PROOF",
-        "description":   "Webhook status COMPLETED"
-      }
-    ]
-  }'</code></pre>
 </section>
 
 <section id="sample-read">
   <h2>Sample · Read &amp; filter</h2>
+  <p>Lookup conditions are exact-equality on top-level columns (<code>carrier</code>, <code>user_action_id</code>, …).</p>
   <div class="code-wrap">
     <button class="copy-btn" data-copy="ex-read-curl">Copy</button>
-<pre id="ex-read-curl"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/read" \
-  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
-  -H "Content-Type: application/json" \
+<pre id="ex-read-curl"><code>curl --request POST 'https://api-india-1.fieldproxy.ai/api/read' \
+  --header 'x-api-key: &lt;YOUR_API_KEY&gt;' \
+  --header 'Content-Type: application/json' \
   --data '{
-    "tableName": "furlenco_service_requests",
-    "condition": { "service_display_id": "SA-2026-00123" }
+    "tableName": "furlenco_api_log",
+    "condition": { "user_action_id": "ORD2359989448" }
   }'</code></pre>
   </div>
-  <p>The <code>condition</code> object becomes a <code>WHERE col = val AND col = val ...</code> clause — every key/value is ANDed together, only exact equality.</p>
+  <p>The <code>condition</code> object becomes a <code>WHERE col = val AND col = val ...</code> clause — every key/value is ANDed, only exact equality on top-level columns.</p>
 </section>
 
 <section id="sample-update">
   <h2>Sample · Update a row</h2>
+  <p>Update the typed top-level columns (<code>carrier</code>, <code>vertical</code>, …) directly. To change a value inside a <code>JSONB</code> column (e.g. <code>service_activity.status</code>), replace the whole <code>JSONB</code> object.</p>
   <div class="code-wrap">
     <button class="copy-btn" data-copy="ex-update-curl">Copy</button>
-<pre id="ex-update-curl"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/update" \
-  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
-  -H "Content-Type: application/json" \
+<pre id="ex-update-curl"><code>curl --request POST 'https://api-india-1.fieldproxy.ai/api/update' \
+  --header 'x-api-key: &lt;YOUR_API_KEY&gt;' \
+  --header 'Content-Type: application/json' \
   --data '{
-    "tableName": "furlenco_service_requests",
-    "data":      { "priority": "HIGH" },
-    "condition": { "service_display_id": "SA-2026-00123" }
+    "tableName": "furlenco_api_log",
+    "data":      { "vertical": "FURLENCO_UNLMTD" },
+    "condition": { "user_action_id": "ORD2359989448" }
   }'</code></pre>
   </div>
 </section>
@@ -875,16 +860,16 @@ Body   (raw, JSON) — see the JSON above</code></pre>
 <section id="sample-delete">
   <h2>Sample · Delete a row</h2>
   <div class="note warn">
-    <strong>Careful.</strong> Delete cascades to the Haier child + status updates + images + ratings. Run a <code>/api/read</code> first to confirm the target.
+    <strong>Careful.</strong> Run a <code>/api/read</code> first to confirm the target row(s). Every row matching the condition will be removed.
   </div>
   <div class="code-wrap">
     <button class="copy-btn" data-copy="ex-delete-curl">Copy</button>
-<pre id="ex-delete-curl"><code>curl -X POST "https://api-india-1.fieldproxy.ai/api/delete" \
-  -H "x-api-key: &lt;YOUR_API_KEY&gt;" \
-  -H "Content-Type: application/json" \
+<pre id="ex-delete-curl"><code>curl --request POST 'https://api-india-1.fieldproxy.ai/api/delete' \
+  --header 'x-api-key: &lt;YOUR_API_KEY&gt;' \
+  --header 'Content-Type: application/json' \
   --data '{
-    "tableName": "furlenco_service_requests",
-    "condition": { "service_display_id": "SA-2026-00123" }
+    "tableName": "furlenco_api_log",
+    "condition": { "user_action_id": "ORD2359989448" }
   }'</code></pre>
   </div>
 </section>
@@ -894,12 +879,11 @@ Body   (raw, JSON) — see the JSON above</code></pre>
   <table class="cols">
     <thead><tr><th>HTTP</th><th>Message</th><th>What to do</th></tr></thead>
     <tbody>
-      <tr><td>400</td><td>Bulk insert failed · <code>duplicate key value violates unique constraint "furlenco_service_requests_pkey"</code></td><td>You sent <code>request_id</code> — remove it. PK is auto-generated.</td></tr>
-      <tr><td>400</td><td><code>duplicate key value violates unique constraint "furlenco_service_requests_pcid_key"</code></td><td><code>pcid</code> already exists. Use a fresh value.</td></tr>
-      <tr><td>400</td><td><code>duplicate key value violates unique constraint "furlenco_service_requests_service_display_id_key"</code></td><td><code>service_display_id</code> already exists. Use a fresh value.</td></tr>
-      <tr><td>400</td><td><code>null value in column "service_display_id" violates not-null constraint</code></td><td>Always provide <code>service_display_id</code> on insert.</td></tr>
-      <tr><td>400</td><td><code>insert or update on table "..." violates foreign key constraint</code></td><td>FK target row doesn't exist. Insert the parent first (partner / request / technician).</td></tr>
-      <tr><td>401</td><td>Unauthorized</td><td>Missing or expired <code>x-api-key</code>.</td></tr>
+      <tr><td>400</td><td>Bulk insert failed · <code>duplicate key value violates unique constraint "furlenco_api_log_pkey"</code></td><td>You sent <code>id</code> in the row — remove it. The PK is auto-generated.</td></tr>
+      <tr><td>400</td><td><code>invalid input syntax for type json</code></td><td>One of the nested <code>JSONB</code> objects is malformed. Validate the JSON with <a href="https://jsonlint.com" target="_blank" rel="noopener">jsonlint</a> first.</td></tr>
+      <tr><td>400</td><td><code>null value in column "carrier" violates not-null constraint</code> <em>(if you add NOT NULL to top-level scalars)</em></td><td>Always send <code>carrier</code>, <code>user_action_id</code>, <code>vertical</code> on insert.</td></tr>
+      <tr><td>401</td><td>Unauthorized</td><td>Missing or expired <code>x-api-key</code>. Re-generate from the FieldProxy app — JWT TTL is 30 days.</td></tr>
+      <tr><td>403</td><td>Forbidden</td><td>The key is valid but the tenant / table is not permitted for it.</td></tr>
       <tr><td>500</td><td>Internal Server Error</td><td>Server-side fault — try again or contact <a href="mailto:support@fieldproxy.com">support@fieldproxy.com</a>.</td></tr>
     </tbody>
   </table>
@@ -985,9 +969,9 @@ Body   (raw, JSON) — see the JSON above</code></pre>
      ---------------------------------------------------------------------- */
   const ENC = {
     iterations: 250000,
-    saltB64:    "8ZzjApJJMQTI4ig11nT15g==",
-    ivB64:      "gYFTOQsbgxh16cJP",
-    cipherB64:  "kyxwjzztI7Nc/0UvxqfXx6nkoXed/eyXI/llg7zYyk+welI4olG3my+3izLX1X530RpN5aVXCmYDzc/GqWK1dqoOLu0mJC4S+qIawmcCe2mIQL2d/9/QtGsvakBXqy9pLd0Ejbr6eCpm5ikd6lYIO3pzmKFC7sZoXWljsvCnUGIP8aO3HwntAD6usTekWscqrH+AFh/W9Ipgzboyl0higjH13uSpU6BcOUwLKosVyTs4mGWNGgfln4fT9P4wUvVyETqB6J+preqxWsCf3jZSlEkAoA=="
+    saltB64:    "IonMBpjycyaSohINZhICEQ==",
+    ivB64:      "gjCW3VUxksjYCM+n",
+    cipherB64:  "YEZNHoFAEqNDSqyJLWkLJuUcObIhIsGkeR4mW+Px/Wuox6zkYaeG7jbbSYG99kt3FLY4Hm5YOMVPNLFo8ZhAnVz8QKZpBYstwojeBNTj+YIHT55NckVmvfGLtrj/9wAR7T97EzwzOPIyvJly/m8sO/mOrAV/Jg3ra/4ncuCgk4iOPIhodReBw8aeX0Z2XAjPu/v8nC7gAbSyNmL0O90WBwQlBH7DzSL4vv6bxSFbR1AdhGrDTTwDez1a/qvji1Jed6/J0Toi+cHMoTk5pW2bd/EYdzddBpGS8JH5ZA1AeIuEuJ4cI4MjryT3VmpZxvGK5Hm9Ay+bc83Cd9ylESrTzXFIWX3XSj/BoUDheLvENSjJHZx4uIMhVGPJEljCqDE8SYfVVIOZng3dQ0G8W7Qwa60ZCkx8Gf2Kea/1Fw=="
   };
 
   function b64ToBytes(s) {
