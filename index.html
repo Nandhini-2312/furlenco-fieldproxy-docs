@@ -373,6 +373,39 @@
   <div class="note">
     Prefer the FieldProxy app whenever possible — the token shown above is a convenience snapshot. The source of truth is the API-tokens screen inside <a href="https://app.fieldproxy.ai/login" target="_blank" rel="noopener">app.fieldproxy.ai</a>.
   </div>
+
+  <h3>3 · Generate a new API key (in-app)</h3>
+  <p>Inside the FieldProxy app, open <strong>Settings → API keys → New API key</strong>. Each key is fully scoped at creation time.</p>
+  <table class="cols">
+    <thead><tr><th>Field</th><th>What it controls</th><th>Options</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="col">Label</td>
+        <td>Human-readable name so you can identify the key later (e.g. <em>Furlenco prod ingest</em>).</td>
+        <td>Free text · optional</td>
+      </tr>
+      <tr>
+        <td class="col">Expires in</td>
+        <td>How long the key is valid before it's automatically rejected.</td>
+        <td><code>24 hours</code> · <code>7 days</code> · <code>30 days</code> (default) · <code>90 days</code> · <code>1 year</code> · <code>Never</code></td>
+      </tr>
+      <tr>
+        <td class="col">Operations</td>
+        <td>Which <code>/api/*</code> endpoints the key is allowed to hit.</td>
+        <td>Any combination of <code>read</code>, <code>insert</code>, <code>update</code>, <code>delete</code></td>
+      </tr>
+      <tr>
+        <td class="col">Restrict to specific tables</td>
+        <td>When off, the key works on every table in the tenant DB. When on, it's locked to a checkbox-selected subset (search supported).</td>
+        <td>Toggle · default <strong>off</strong> (all tables)</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>After clicking <strong>Create key</strong>, FieldProxy shows the JWT <strong>once</strong>. Copy it into your secrets store right away — it can't be revealed again, but it can be re-issued or revoked anytime from the same screen.</p>
+  <div class="note warn">
+    <strong>Least-privilege recommendation for partner integrations:</strong>
+    create a dedicated key per partner with <code>insert</code> only, restricted to a single table (e.g. <code>furlenco_api_log</code>), expiring in 30 or 90 days. Don't reuse a multi-purpose admin key for inbound webhooks.
+  </div>
 </section>
 
 <section id="endpoints">
